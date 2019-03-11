@@ -16,11 +16,18 @@ namespace Slipe.Commands
 
         public virtual void ParseArguments(string[] args)
         {
+            parameters = new List<string>();
+            options = new Dictionary<string, string>();
+
             string previous = null;
             foreach(string argument in args)
             {
                 if (argument.StartsWith("-"))
                 {
+                    if (previous != null)
+                    {
+                        options[previous.Substring(1)] = "";
+                    }
                     previous = argument;
                 } else
                 {
@@ -33,6 +40,10 @@ namespace Slipe.Commands
                     }
                     previous = null;
                 }
+            }
+            if (previous != null)
+            {
+                options[previous.Substring(1)] = "";
             }
         }
 

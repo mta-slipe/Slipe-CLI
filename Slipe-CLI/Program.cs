@@ -13,10 +13,18 @@ namespace Slipe
         {
             try
             {
+                //args = new string[]
+                //{
+                //    "add-project",
+                //    "MTACore",
+                //    "-server"
+                //};
                 new CLI(args);
             } catch(SlipeException e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(e.Message);
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 

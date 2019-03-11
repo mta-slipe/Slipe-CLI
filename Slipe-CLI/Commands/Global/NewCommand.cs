@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Slipe.Commands.Global
 {
-    class InstallCommand : GlobalCommand
+    class NewCommand : GlobalCommand
     {
-        public override string Template => "install";
+        public override string Template => "new";
 
         public override void Run()
         {
