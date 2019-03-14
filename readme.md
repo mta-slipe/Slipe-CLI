@@ -1,12 +1,10 @@
-# Project Title
-
-Slipe-CLI
-
-## Getting Started
+# Slipe-CLI
 
 Slipe-CLI is the command line interface for the [Slipe-MTA Framework](https://github.com/mta-slipe/Slipe-Core) 
 
-## prerequisites
+## Getting Started
+
+### prerequisites
 ```
 .NET Core 3.0
 ```
