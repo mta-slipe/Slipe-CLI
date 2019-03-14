@@ -53,7 +53,7 @@ slipe meta-generate
 See also the list of [contributors](https://github.com/mta-slipe/Slipe-CLI/graphs/contributors) who participated in this project.
 
 ## License
-[Apache 2.0 license](https://github.com/mta-slipe/Slipe-CLI/blob/master/LICENSE).
+[Apache 2.0 license](https://github.com/mta-slipe/Slipe-CLI/blob/master/LICENSE.MD).
 
 ## Communication
 
