@@ -104,7 +104,7 @@ namespace Slipe.Commands.Project
         private void CompileSourceFiles(string directory, string to, string[] dlls)
         {
             string[] pathSplits = directory.Split("\\");
-            string command = @"dotnet .\Slipe\Compiler\CSharp.lua.Launcher.dll -s " + directory + @" -d " + to;
+            string command = @"dotnet .\Slipe\Compiler\CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c ";
             command += " -l " + string.Join(";", dlls);
             Console.WriteLine(command);
 
