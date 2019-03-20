@@ -21,19 +21,25 @@ namespace Slipe.Commands.Project
                 dlls[i] = "./Slipe/DLL/" + config.dlls[i];
             }
 
-            foreach (string project in config.compileTargets.client)
+            if (! options.ContainsKey("server-only"))
             {
-                CopySourceFiles("./Source/" + project, "./Slipe/Build/Client");
+                foreach (string project in config.compileTargets.client)
+                {
+                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Client");
+                }
+                PrepareDistDirectory("./Dist/Client");
+                CompileSourceFiles("./Slipe/Build/Client", "Dist/Client", dlls);
             }
-            PrepareDistDirectory("./Dist/Client");
-            CompileSourceFiles("./Slipe/Build/Client", "Dist/Client", dlls);
 
-            foreach(string project in config.compileTargets.server)
+            if (!options.ContainsKey("client-only"))
             {
-                CopySourceFiles("./Source/" + project, "./Slipe/Build/Server");
+                foreach (string project in config.compileTargets.server)
+                {
+                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Server");
+                }
+                PrepareDistDirectory("./Dist/Server");
+                CompileSourceFiles("./Slipe/Build/Server", "Dist/Server", dlls);
             }
-            PrepareDistDirectory("./Dist/Server");
-            CompileSourceFiles("./Slipe/Build/Server", "Dist/Server", dlls);
 
             new GenerateMetaCommand().Run();
         }

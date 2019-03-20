@@ -67,6 +67,10 @@ namespace Slipe.Commands.Project
         private void IndexDirectory(string directory, string scriptType)
         {
             Console.WriteLine("Indexing {0}", directory);
+            if (!Directory.Exists(directory))
+            {
+                return;
+            }
             foreach(string file in Directory.GetFiles(directory, "*", SearchOption.AllDirectories))
             {
                 if (! file.EndsWith("manifest.lua"))
