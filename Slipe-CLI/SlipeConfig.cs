@@ -31,11 +31,27 @@ namespace Slipe
 
         public List<string> dlls;
         public List<string> systemComponents;
+        public List<string> assetDirectories;
+        public List<SlipeModule> modules;
     }
 
     struct SlipeConfigCompileTarget
     {
         public List<string> client;
         public List<string> server;
+    }
+
+    struct SlipeModule
+    {
+        public string type;
+        public string name;
+        public string path;
+
+        public SlipeConfigCompileTarget compileTargets;
+
+        public List<string> dlls;
+        public List<string> systemComponents;
+        public List<string> backingLua;
+        public List<string> assetDirectories;
     }
 }

@@ -8,37 +8,20 @@ namespace Slipe.Commands.Project
 {
     class CompileCommand : ProjectCommand
     {
+        SlipeConfig config;
         public override string Template => "compile";
 
         public override void Run()
         {
-            SlipeConfig config = ConfigHelper.Read();
-            PrepareBuildDirectory("./Slipe/Build");
+            config = ConfigHelper.Read();
 
-            string[] dlls = new string[config.dlls.Count];
-            for (int i = 0; i < config.dlls.Count; i++)
+            if (options.ContainsKey("module"))
             {
-                dlls[i] = "./Slipe/DLL/" + config.dlls[i];
-            }
-
-            if (! options.ContainsKey("server-only"))
+                string targetModule = options["module"];
+                CompileModule(targetModule);
+            } else
             {
-                foreach (string project in config.compileTargets.client)
-                {
-                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Client");
-                }
-                PrepareDistDirectory("./Dist/Client");
-                CompileSourceFiles("./Slipe/Build/Client", "Dist/Client", dlls);
-            }
-
-            if (!options.ContainsKey("client-only"))
-            {
-                foreach (string project in config.compileTargets.server)
-                {
-                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Server");
-                }
-                PrepareDistDirectory("./Dist/Server");
-                CompileSourceFiles("./Slipe/Build/Server", "Dist/Server", dlls);
+                CompileProject();
             }
 
             new GenerateMetaCommand().Run();
@@ -74,7 +57,7 @@ namespace Slipe.Commands.Project
             {
                 if (! file.Contains("\\obj\\"))
                 {
-                    string target = file.Replace("./Source/", "");
+                    string target = file.Replace(from, "");
                     string fullTarget = to + "/" + target;
                     
                     if (!Directory.Exists(Path.GetDirectoryName(fullTarget))){
@@ -127,6 +110,158 @@ namespace Slipe.Commands.Project
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
+        }
+
+        private void CopyDlls(string from, string to)
+        {
+            if (!Directory.Exists(to))
+            {
+                Directory.CreateDirectory(to);
+            }
+            string[] files = Directory.GetFiles(from, "", SearchOption.AllDirectories);
+            foreach (string file in files)
+            {
+                if (!file.Contains("\\obj\\") && file.EndsWith(".dll"))
+                {
+                    string fullTarget = to + "/" + Path.GetFileName(file);
+
+                    if (!Directory.Exists(Path.GetDirectoryName(fullTarget)))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(fullTarget));
+                    }
+
+                    File.Copy(file, fullTarget, true);
+                }
+            }
+        }
+
+        private List<string> GetModuleDlls(string moduleName)
+        {
+            SlipeModule moduleConfig = config.modules.Find(module => module.name == moduleName);
+
+            string basePath = moduleConfig.path;
+            string dllPath = basePath + "/DLL";
+
+            List<string> dlls = new List<string>();
+
+            if (!Directory.Exists(dllPath))
+            {
+                return dlls;
+            }
+
+            string[] files = Directory.GetFiles(dllPath, "", SearchOption.AllDirectories);
+            foreach (string file in files)
+            {
+                dlls.Add(file);
+            }
+            return dlls;
+        }
+
+        private List<string> GetDlls(string excludeModule = null)
+        {
+            List<string> dlls = new List<string>();
+
+            foreach(SlipeModule module in config.modules)
+            {
+                if (module.name != excludeModule)
+                {
+                    foreach(string dll in GetModuleDlls(module.name))
+                    {
+                        dlls.Add(dll);
+                    }
+
+                } else
+                {
+                    foreach(string dll in module.dlls)
+                    {
+                        dlls.Add(module.path + "/DLL/" + dll);
+                    }
+                }
+            }
+
+            return dlls;
+        }
+
+        private void CompileProject()
+        {
+            PrepareBuildDirectory("./Slipe/Build");
+
+            List<string> dllList = GetDlls();
+            string[] dlls = new string[dllList.Count];
+            for (int i = 0; i < dllList.Count; i++)
+            {
+                dlls[i] = dllList[i];
+            }
+
+            if (!options.ContainsKey("server-only"))
+            {
+                foreach (string project in config.compileTargets.client)
+                {
+                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Client");
+                }
+                PrepareDistDirectory("./Dist/Client");
+                CompileSourceFiles("./Slipe/Build/Client", "Dist/Client", dlls);
+            }
+
+            if (!options.ContainsKey("client-only"))
+            {
+                foreach (string project in config.compileTargets.server)
+                {
+                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Server");
+                }
+                PrepareDistDirectory("./Dist/Server");
+                CompileSourceFiles("./Slipe/Build/Server", "Dist/Server", dlls);
+            }
+        }
+
+        private void CompileModule(string moduleName)
+        {
+            SlipeModule moduleConfig = config.modules.Find(module => module.name == moduleName);
+            if (moduleConfig.type != "internal")
+            {
+                throw new SlipeException("Only internal modules can be compiled");
+            }
+
+            string basePath = moduleConfig.path;
+            string buildPath = basePath + "/Build";
+            string clientBuildPath = buildPath + "/Client";
+            string serverBuildPath = buildPath + "/Server";
+            string distPath = basePath + "/Lua/Compiled";
+            string clientDistPath = basePath + "/Lua/Compiled/Client";
+            string serverDistPath = basePath + "/Lua/Compiled/Server";
+            string dllPath = basePath + "/DLL";
+
+            List<string> dlls = GetDlls(moduleName);
+
+            PrepareBuildDirectory(buildPath);
+            PrepareDistDirectory(distPath);
+
+            if (!options.ContainsKey("server-only"))
+            {
+                foreach (string project in moduleConfig.compileTargets.client)
+                {
+                    CopySourceFiles(basePath + "/" + project, clientBuildPath + "/" + project);
+                }
+                CompileSourceFiles(clientBuildPath, clientDistPath, dlls.ToArray());
+                foreach (string project in moduleConfig.compileTargets.client)
+                {
+                    CopyDlls(basePath + "/" + project, dllPath);
+                }
+            }
+
+
+            if (!options.ContainsKey("client-only"))
+            {
+                foreach (string project in moduleConfig.compileTargets.server)
+                {
+                    CopySourceFiles(basePath + "/" + project, serverBuildPath + "/" + project);
+                }
+                CompileSourceFiles(serverBuildPath, serverDistPath, dlls.ToArray());
+                foreach (string project in moduleConfig.compileTargets.server)
+                {
+                    CopyDlls(basePath + "/" + project, dllPath);
+                }
+            }
         }
 
     }

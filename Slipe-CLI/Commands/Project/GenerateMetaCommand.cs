@@ -22,13 +22,20 @@ namespace Slipe.Commands.Project
             root = meta.CreateElement("meta");
 
             CreateSystemElements(config);
-            CreateMTAElements();
+            // CreateMTAElements();
+
+
+            foreach(SlipeModule module in config.modules)
+            {
+                IndexDirectory(module.path + "/Lua/Compiled/Server", "server");
+                IndexDirectory(module.path + "/Lua/Compiled/Client", "client");
+            }
+
             IndexDirectory("./Dist/Server", "server");
             IndexDirectory("./Dist/Client", "client");
+
             CreateMainElements();
-
-
-
+                       
             meta.AppendChild(root);
             meta.Save("./meta.xml");
 
@@ -42,6 +49,29 @@ namespace Slipe.Commands.Project
                 element.SetAttribute("src", "Slipe/Lua/System/" + systemComponent);
                 element.SetAttribute("type", "shared");
                 root.AppendChild(element);
+            }
+            foreach(SlipeModule module in config.modules)
+            {
+                if (module.systemComponents != null)
+                {
+                    foreach(string systemComponent in module.systemComponents)
+                    {
+                        XmlElement element = meta.CreateElement("script");
+                        element.SetAttribute("src", module.path + "/Lua/SystemComponents/" + systemComponent);
+                        element.SetAttribute("type", "shared");
+                        root.AppendChild(element);
+                    }
+                }
+                if (module.backingLua != null)
+                {
+                    foreach(string backingFile in module.backingLua)
+                    {
+                        XmlElement element = meta.CreateElement("script");
+                        element.SetAttribute("src", module.path + "/Lua/Backing/" + backingFile);
+                        element.SetAttribute("type", "shared");
+                        root.AppendChild(element);
+                    }
+                }
             }
         }
 

@@ -15,9 +15,10 @@ namespace Slipe
             {
                 //args = new string[]
                 //{
-                //    "add-project",
-                //    "MTACore",
-                //    "-server"
+                //    "meta-generate",
+                //    //"-module",
+                //    //"SlipeCore",
+                //    //"-server-only"
                 //};
                 new CLI(args);
             } catch(SlipeException e)
