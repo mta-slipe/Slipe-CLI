@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Slipe.Commands.Project
+namespace Slipe.Commands.Project.Project
 {
     class AddProjectCommand : ProjectCommand
     {

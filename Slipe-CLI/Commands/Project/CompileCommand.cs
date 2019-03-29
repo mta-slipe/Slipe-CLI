@@ -152,7 +152,7 @@ namespace Slipe.Commands.Project
             string[] files = Directory.GetFiles(dllPath, "", SearchOption.AllDirectories);
             foreach (string file in files)
             {
-                dlls.Add(file);
+                dlls.Add(file.Replace(".dll","!"));
             }
             return dlls;
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Slipe.Commands.Project
+namespace Slipe.Commands.Project.Project
 {
     class RemoveProjectCommand : ProjectCommand
     {
