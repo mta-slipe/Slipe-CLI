@@ -103,20 +103,25 @@ namespace Slipe.Commands.Project
             }
             foreach(string file in Directory.GetFiles(directory, "*", SearchOption.AllDirectories))
             {
+                string relativePath = file.Replace("\\", "/");
+                if (relativePath.StartsWith("."))
+                {
+                    relativePath = relativePath.Substring(1);
+                }
+                if (relativePath.StartsWith("/"))
+                {
+                    relativePath = relativePath.Substring(1);
+                }
                 if (! file.EndsWith("manifest.lua"))
                 {
-                    string relativePath = file.Replace("\\", "/");
-                    if (relativePath.StartsWith("."))
-                    {
-                        relativePath = relativePath.Substring(1);
-                    }
-                    if (relativePath.StartsWith("/"))
-                    {
-                        relativePath = relativePath.Substring(1);
-                    }
                     XmlElement element = meta.CreateElement("script");
                     element.SetAttribute("src", relativePath);
                     element.SetAttribute("type", scriptType);
+                    root.AppendChild(element);
+                } else
+                {
+                    XmlElement element = meta.CreateElement("file");
+                    element.SetAttribute("src", relativePath);
                     root.AppendChild(element);
                 }
             }
@@ -124,11 +129,7 @@ namespace Slipe.Commands.Project
 
         private void CreateMainElements()
         {
-            XmlElement element = meta.CreateElement("file");
-            element.SetAttribute("src", "Dist/Client/manifest.lua");
-            root.AppendChild(element);
-
-            element = meta.CreateElement("script");
+            XmlElement element = meta.CreateElement("script");
             element.SetAttribute("src", "Slipe/Lua/Main/main.lua");
             element.SetAttribute("type", "shared");
             root.AppendChild(element);

@@ -23,21 +23,35 @@ namespace Slipe.Commands.Project.Project
             }
             SlipeConfig config = ConfigHelper.Read();
 
+
+            SlipeConfigCompileTarget target = config.compileTargets;
+
+            if (options.ContainsKey("module"))
+            {
+                foreach (SlipeModule configModule in config.modules)
+                {
+                    if (configModule.name == options["module"])
+                    {
+                        target = configModule.compileTargets;
+                    }
+                }
+            }
+
             if (options.ContainsKey("server"))
             {
-                if (!config.compileTargets.server.Contains(projectName))
+                if (!target.server.Contains(projectName))
                 {
                     throw new SlipeException(projectName + " not found in server");
                 }
-                config.compileTargets.server.Remove(projectName);
+                target.server.Remove(projectName);
             }
             if (options.ContainsKey("client"))
             {
-                if (!config.compileTargets.server.Contains(projectName))
+                if (!target.server.Contains(projectName))
                 {
                     throw new SlipeException(projectName + " not found in client");
                 }
-                config.compileTargets.client.Remove(projectName);
+                target.client.Remove(projectName);
             }
 
             ConfigHelper.Write(config);

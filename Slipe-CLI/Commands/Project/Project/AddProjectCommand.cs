@@ -24,13 +24,26 @@ namespace Slipe.Commands.Project.Project
             }
             SlipeConfig config = ConfigHelper.Read();
 
+            SlipeConfigCompileTarget target = config.compileTargets;
+            
+            if (options.ContainsKey("module"))
+            {
+                foreach (SlipeModule configModule in config.modules)
+                {
+                    if (configModule.name == options["module"])
+                    {
+                        target = configModule.compileTargets;
+                    }
+                }
+            }
+
             if (options.ContainsKey("server"))
             {
                 if (! Directory.Exists("./Source/Server/" + projectName) && !options.ContainsKey("force"))
                 {
                     throw new SlipeException("No project by this name is found in ./Source/Server, if you wish to add it anyway use -force");
                 }
-                config.compileTargets.server.Add(projectName);
+                target.server.Add(projectName);
             }
             if (options.ContainsKey("client"))
             {
@@ -38,7 +51,7 @@ namespace Slipe.Commands.Project.Project
                 {
                     throw new SlipeException("No project by this name is found in ./Source/Server, if you wish to add it anyway use -force");
                 }
-                config.compileTargets.client.Add(projectName);
+                target.client.Add(projectName);
             }
 
             ConfigHelper.Write(config);

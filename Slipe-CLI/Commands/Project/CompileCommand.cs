@@ -234,10 +234,10 @@ namespace Slipe.Commands.Project
             List<string> dlls = GetDlls(moduleName);
 
             PrepareBuildDirectory(buildPath);
-            PrepareDistDirectory(distPath);
 
             if (!options.ContainsKey("server-only"))
             {
+                PrepareDistDirectory(clientDistPath);
                 foreach (string project in moduleConfig.compileTargets.client)
                 {
                     CopySourceFiles(basePath + "/" + project, clientBuildPath + "/" + project);
@@ -252,6 +252,7 @@ namespace Slipe.Commands.Project
 
             if (!options.ContainsKey("client-only"))
             {
+                PrepareDistDirectory(serverDistPath);
                 foreach (string project in moduleConfig.compileTargets.server)
                 {
                     CopySourceFiles(basePath + "/" + project, serverBuildPath + "/" + project);
