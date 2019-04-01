@@ -22,12 +22,8 @@ namespace Slipe.Commands.Project
             {
                 throw new SlipeException("No dll by this name is found in ./Slipe/DLL, if you wish to add it anyway use -force");
             }
-
-            SlipeConfig config = ConfigHelper.Read();
-
+            
             config.dlls.Add(dllName);
-
-            ConfigHelper.Write(config);
         }
     }
 }

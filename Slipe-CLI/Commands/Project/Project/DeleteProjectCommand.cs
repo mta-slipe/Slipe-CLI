@@ -28,19 +28,9 @@ namespace Slipe.Commands.Project.Project
             string name = parameters[0];
             string path = "Source/" + name;
 
-            SlipeConfig config = ConfigHelper.Read();
-
-            SlipeModule module = new SlipeModule();
-            if (options.ContainsKey("module"))
+            if (targetsModule)
             {
-                foreach (SlipeModule configModule in config.modules)
-                {
-                    if (configModule.name == options["module"])
-                    {
-                        module = configModule;
-                        path = module.path + "/" + path;
-                    }
-                }
+                path = targetModule.path + "/" + path;
             }
 
             // delete everything
@@ -55,15 +45,13 @@ namespace Slipe.Commands.Project.Project
             }
             Directory.Delete(path);
             
-            SlipeConfigCompileTarget target = options.ContainsKey("module") ? module.compileTargets : config.compileTargets;
+            SlipeConfigCompileTarget target = options.ContainsKey("module") ? targetModule.compileTargets : config.compileTargets;
             target.server.Remove(name);
             target.client.Remove(name);
 
             string csProjPath = path + "/" + name + ".csproj";
             SlnFile solution = new SlnFile("Resource.sln");
             solution.RemoveProject(name, csProjPath);
-
-            ConfigHelper.Write(config);
 
         }
     }

@@ -21,19 +21,9 @@ namespace Slipe.Commands.Project.Project
             string name = parameters[0];
             string path = "Source/" + name;
 
-            SlipeConfig config = ConfigHelper.Read();
-
-            SlipeModule module = new SlipeModule();
-            if (options.ContainsKey("module"))
+            if (targetsModule)
             {
-                foreach (SlipeModule configModule in config.modules)
-                {
-                    if (configModule.name == options["module"])
-                    {
-                        module = configModule;
-                        path = module.path + "/" + path;
-                    }
-                }
+                path = targetModule.path + "/" + path;
             }
 
 
@@ -52,7 +42,7 @@ namespace Slipe.Commands.Project.Project
             SlnFile solution = new SlnFile("Resource.sln");
             solution.AddProject(name, csProjPath);
 
-            SlipeConfigCompileTarget target = options.ContainsKey("module") ? module.compileTargets : config.compileTargets;
+            SlipeConfigCompileTarget target = targetsModule ? targetModule.compileTargets : config.compileTargets;
             if (options.ContainsKey("server"))
             {
                 target.server.Add(name);
@@ -61,8 +51,6 @@ namespace Slipe.Commands.Project.Project
             {
                 target.client.Add(name);
             }
-
-            ConfigHelper.Write(config);
         }
     }
 }

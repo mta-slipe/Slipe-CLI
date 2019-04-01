@@ -18,8 +18,6 @@ namespace Slipe.Commands.Project
 
             string dllName = parameters[0];
 
-            SlipeConfig config = ConfigHelper.Read();
-
             if (!config.dlls.Contains(dllName))
             {
                 throw new SlipeException(dllName + " not found in dll list");
@@ -27,8 +25,6 @@ namespace Slipe.Commands.Project
 
 
             config.dlls.Remove(dllName);
-
-            ConfigHelper.Write(config);
         }
     }
 }

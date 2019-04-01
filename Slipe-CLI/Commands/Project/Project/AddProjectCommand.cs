@@ -22,20 +22,8 @@ namespace Slipe.Commands.Project.Project
             {
                 throw new SlipeException("Please specify server or client (or both): \nslipe add-project {project-name} [-server] [-client]");
             }
-            SlipeConfig config = ConfigHelper.Read();
 
-            SlipeConfigCompileTarget target = config.compileTargets;
-            
-            if (options.ContainsKey("module"))
-            {
-                foreach (SlipeModule configModule in config.modules)
-                {
-                    if (configModule.name == options["module"])
-                    {
-                        target = configModule.compileTargets;
-                    }
-                }
-            }
+            SlipeConfigCompileTarget target = targetsModule ? targetModule.compileTargets : config.compileTargets;
 
             if (options.ContainsKey("server"))
             {
@@ -53,8 +41,6 @@ namespace Slipe.Commands.Project.Project
                 }
                 target.client.Add(projectName);
             }
-
-            ConfigHelper.Write(config);
         }
     }
 }

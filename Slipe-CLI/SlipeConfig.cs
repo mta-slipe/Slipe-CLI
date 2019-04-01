@@ -31,7 +31,7 @@ namespace Slipe
 
         public List<string> dlls;
         public List<string> systemComponents;
-        public List<string> assetDirectories;
+        public List<SlipeAssetDirectory> assetDirectories;
         public List<SlipeModule> modules;
     }
 
@@ -52,6 +52,12 @@ namespace Slipe
         public List<string> dlls;
         public List<string> systemComponents;
         public List<string> backingLua;
-        public List<string> assetDirectories;
+        public List<SlipeAssetDirectory> assetDirectories;
+    }
+
+    struct SlipeAssetDirectory
+    {
+        public string path;
+        public bool downloads;
     }
 }

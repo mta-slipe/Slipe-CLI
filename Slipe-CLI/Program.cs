@@ -1,4 +1,5 @@
 ﻿using Slipe.Commands;
+using Slipe.Commands.Project;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,12 +16,16 @@ namespace Slipe
             {
                 //args = new string[]
                 //{
-                //    "create-project",
-                //    "TestProject",
-                //    "-y",
+                //    "add-assets",
+                //    "Assets",
                 //    "-module",
-                //    "SlipeCore",
-                //    "-server"
+                //    "TestModule",
+                //    //"create-project",
+                //    //"TestProject",
+                //    //"-y",
+                //    //"-module",
+                //    //"SlipeCore",
+                //    //"-server"
                 //};
                 new CLI(args);
             } catch(SlipeException e)
@@ -65,6 +70,10 @@ namespace Slipe
                     arguments.RemoveAt(0);
                     command.ParseArguments(arguments.ToArray());
                     command.Run();
+                    if (command is ProjectCommand)
+                    {
+                        ((ProjectCommand)command).SaveConfig();
+                    }
                     return;
                 }
             }

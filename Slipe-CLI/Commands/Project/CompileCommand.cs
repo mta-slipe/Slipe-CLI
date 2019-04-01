@@ -8,13 +8,10 @@ namespace Slipe.Commands.Project
 {
     class CompileCommand : ProjectCommand
     {
-        SlipeConfig config;
         public override string Template => "compile";
 
         public override void Run()
         {
-            config = ConfigHelper.Read();
-
             if (options.ContainsKey("module"))
             {
                 string targetModule = options["module"];
