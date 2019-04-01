@@ -21,7 +21,9 @@ namespace Slipe.Commands.Project
                 CompileProject();
             }
 
-            new GenerateMetaCommand().Run();
+            GenerateMetaCommand generateMeta = new GenerateMetaCommand();
+            generateMeta.ParseArguments(new string[0]);
+            generateMeta.Run();
         }
 
         private void PrepareBuildDirectory(string path)
