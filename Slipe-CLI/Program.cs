@@ -14,19 +14,10 @@ namespace Slipe
         {
             try
             {
-                //args = new string[]
-                //{
-                //    "add-assets",
-                //    "Assets",
-                //    "-module",
-                //    "TestModule",
-                //    //"create-project",
-                //    //"TestProject",
-                //    //"-y",
-                //    //"-module",
-                //    //"SlipeCore",
-                //    //"-server"
-                //};
+                args = new string[]
+                {
+                    "restart-resource",
+                };
                 new CLI(args);
             } catch(SlipeException e)
             {

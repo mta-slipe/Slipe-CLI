@@ -33,6 +33,8 @@ namespace Slipe
         public List<string> systemComponents;
         public List<SlipeAssetDirectory> assetDirectories;
         public List<SlipeModule> modules;
+        public string clientMinVersion;
+        public string serverMinVersion;
     }
 
     struct SlipeConfigCompileTarget

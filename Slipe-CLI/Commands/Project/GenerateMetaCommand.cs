@@ -33,6 +33,7 @@ namespace Slipe.Commands.Project
 
             CreateMainElements();
             CreateFileElements(config);
+            CreateMinVersion();
             
             meta.AppendChild(root);
             meta.Save("./meta.xml");
@@ -73,25 +74,6 @@ namespace Slipe.Commands.Project
             }
         }
 
-        private void CreateMTAElements()
-        {
-            XmlElement element = meta.CreateElement("script");
-            element.SetAttribute("src", "Slipe/Lua/MTA/server.lua");
-            element.SetAttribute("type", "server");
-            root.AppendChild(element);
-
-            element = meta.CreateElement("script");
-            element.SetAttribute("src", "Slipe/Lua/MTA/client.lua");
-            element.SetAttribute("type", "client");
-            root.AppendChild(element);
-
-            element = meta.CreateElement("script");
-            element.SetAttribute("src", "Slipe/Lua/MTA/shared.lua");
-            element.SetAttribute("type", "shared");
-            root.AppendChild(element);
-        }
-
-
         private void IndexDirectory(string directory, string scriptType)
         {
             Console.WriteLine("Indexing {0}", directory);
@@ -130,6 +112,14 @@ namespace Slipe.Commands.Project
             XmlElement element = meta.CreateElement("script");
             element.SetAttribute("src", "Slipe/Lua/Main/main.lua");
             element.SetAttribute("type", "shared");
+            root.AppendChild(element);
+        }
+
+        private void CreateMinVersion()
+        {
+            XmlElement element = meta.CreateElement("min_mta_version");
+            element.SetAttribute("server", config.serverMinVersion);
+            element.SetAttribute("client", config.clientMinVersion);
             root.AppendChild(element);
         }
 
