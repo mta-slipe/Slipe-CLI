@@ -14,10 +14,10 @@ namespace Slipe
         {
             try
             {
-                args = new string[]
-                {
-                    "restart-resource",
-                };
+                //args = new string[]
+                //{
+                //    "restart-resource",
+                //};
                 new CLI(args);
             } catch(SlipeException e)
             {
