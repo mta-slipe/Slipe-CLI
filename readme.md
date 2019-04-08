@@ -5,14 +5,18 @@ Slipe-CLI is the command line interface for the [Slipe-MTA Framework](https://gi
 ## Getting Started
 
 ### prerequisites
-```
-.NET Core 3.0
-```
+* [.NET Core 3.0 preview](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+
 
 ## Installation
-* download the .zip file with compiled binaries from the [latest release](https://github.com/mta-slipe/Slipe-CLI/releases). 
-* unzip the binaries and place them somewhere on your system
-* add the directory the binary files are in to your system PATH variable.
+* Install [.NET Core 3.0 preview](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+* download the .zip file with installer from the [latest release](https://github.com/mta-slipe/Slipe-CLI/releases). 
+* unzip the file
+* On Windows:
+	* run the `install.bat` file (double click)
+* On Linux:
+	* run `chmod +x ./install.sh`
+	* run `sudo ./install.sh`
 
 you can now use the `slipe` command anywhere on your system
 

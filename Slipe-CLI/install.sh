@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 # Copy to var/slipe
 cp ./Slipe /var/Slipe -R
