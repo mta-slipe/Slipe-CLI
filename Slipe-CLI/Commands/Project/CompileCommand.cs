@@ -89,11 +89,16 @@ namespace Slipe.Commands.Project
             }
         }
 
-        private void CompileSourceFiles(string directory, string to, string[] dlls)
+        private void CompileSourceFiles(string directory, string to, string[] dlls, bool isModule = false)
         {
             string[] pathSplits = directory.Split("\\");
             string command = @"dotnet .\Slipe\Compiler\CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c ";
             command += " -l " + string.Join(";", dlls);
+
+            if (isModule)
+            {
+                command = command + " -module";
+            }
             Console.WriteLine(command);
 
             Process process = new Process();
@@ -241,7 +246,7 @@ namespace Slipe.Commands.Project
                 {
                     CopySourceFiles(basePath + "/" + project, clientBuildPath + "/" + project);
                 }
-                CompileSourceFiles(clientBuildPath, clientDistPath, dlls.ToArray());
+                CompileSourceFiles(clientBuildPath, clientDistPath, dlls.ToArray(), true);
                 foreach (string project in moduleConfig.compileTargets.client)
                 {
                     CopyDlls(basePath + "/" + project, dllPath);
@@ -256,7 +261,7 @@ namespace Slipe.Commands.Project
                 {
                     CopySourceFiles(basePath + "/" + project, serverBuildPath + "/" + project);
                 }
-                CompileSourceFiles(serverBuildPath, serverDistPath, dlls.ToArray());
+                CompileSourceFiles(serverBuildPath, serverDistPath, dlls.ToArray(), true);
                 foreach (string project in moduleConfig.compileTargets.server)
                 {
                     CopyDlls(basePath + "/" + project, dllPath);
