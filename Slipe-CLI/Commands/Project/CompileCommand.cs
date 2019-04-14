@@ -114,6 +114,10 @@ namespace Slipe.Commands.Project
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
+            if (process.ExitCode != 0)
+            {
+                throw new SlipeException("The compiler failed with exit code " + process.ExitCode.ToString());
+            }
         }
 
         private void CopyDlls(string from, string to)

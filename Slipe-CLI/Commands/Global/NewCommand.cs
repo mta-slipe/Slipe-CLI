@@ -30,7 +30,7 @@ namespace Slipe.Commands.Global
                 Directory.CreateDirectory(directory);
             }
 
-            new WebClient().DownloadFile("https://nanobob.net/slipe/barebones/slipe-barebones.zip", directory + ".zip");
+            new WebClient().DownloadFile("http://mta-slipe.com/slipe-core.zip", directory + ".zip");
 
             ZipFile.ExtractToDirectory(directory + ".zip", directory);
             File.Delete(directory + ".zip");

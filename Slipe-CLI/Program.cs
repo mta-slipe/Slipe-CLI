@@ -10,7 +10,7 @@ namespace Slipe
 {
     class CLI
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             try
             {
@@ -24,7 +24,9 @@ namespace Slipe
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(e.Message);
                 Console.ForegroundColor = ConsoleColor.Gray;
+                return -1;
             }
+            return 0;
         }
 
         public CLI(string[] args)
