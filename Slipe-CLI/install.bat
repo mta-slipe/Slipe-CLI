@@ -40,10 +40,31 @@ if "%slipe_installer_debug%" == "1" (
 	robocopy "%~dp0\Slipe" "%slipe_dir%" /s > NUL
 )
 
-if errorlevel 1 (
-	call :fatal "Some files could not be copied"
-	exit /b %errorlevel%
-)
+:: Damn you robocopy... https://ss64.com/nt/robocopy-exit.html
+
+if %ERRORLEVEL% EQU 16 call :trace "***FATAL ERROR***" & goto :robo_failed
+if %ERRORLEVEL% EQU 15 call :trace "OKCOPY + FAIL + MISMATCHES + XTRA" & goto :robo_failed
+if %ERRORLEVEL% EQU 14 call :trace "FAIL + MISMATCHES + XTRA" & goto :robo_failed
+if %ERRORLEVEL% EQU 13 call :trace "OKCOPY + FAIL + MISMATCHES" & goto :robo_failed
+if %ERRORLEVEL% EQU 12 call :trace "FAIL + MISMATCHE"S& goto :robo_failed
+if %ERRORLEVEL% EQU 11 call :trace "OKCOPY + FAIL + XTRA" & goto :robo_failed
+if %ERRORLEVEL% EQU 10 call :trace "FAIL + XTRA" & goto :robo_failed
+if %ERRORLEVEL% EQU 9 call :trace "OKCOPY + FAIL" & goto :robo_failed
+if %ERRORLEVEL% EQU 8 call :trace "FAIL" & goto :robo_failed
+if %ERRORLEVEL% EQU 7 call :trace "OKCOPY + MISMATCHES + XTRA" & goto :robo_ok
+if %ERRORLEVEL% EQU 6 call :trace "MISMATCHES + XTRA" & goto :robo_ok
+if %ERRORLEVEL% EQU 5 call :trace "OKCOPY + MISMATCHES" & goto :robo_ok
+if %ERRORLEVEL% EQU 4 call :trace "MISMATCHES" & goto :robo_ok
+if %ERRORLEVEL% EQU 3 call :trace "OKCOPY + XTRA" & goto :robo_ok
+if %ERRORLEVEL% EQU 2 call :trace "XTRA" & goto :robo_ok
+if %ERRORLEVEL% EQU 1 call :trace "OKCOPY" & goto :robo_ok
+if %ERRORLEVEL% EQU 0 call :trace "No Change" & goto :robo_ok
+
+:robo_failed
+call :fatal "Some files could not be copied"
+exit /b %errorlevel%
+
+:robo_ok  
 
 
 :: Add directory to path if it does not yet exist
