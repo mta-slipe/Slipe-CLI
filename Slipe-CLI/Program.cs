@@ -16,7 +16,8 @@ namespace Slipe
             {
                 //args = new string[]
                 //{
-                //    "restart-resource",
+                //    "update-module",
+                //    "https://mta-slipe.com/SlipeCoreModule.zip",
                 //};
                 new CLI(args);
             } catch(SlipeException e)
@@ -33,7 +34,6 @@ namespace Slipe
         {
             if (args.Length < 1)
             {
-
                 throw new SlipeException("Please specify a command, Syntax: \nslipe {command}");
             }
 
@@ -48,15 +48,21 @@ namespace Slipe
                 Command command = (Command)Activator.CreateInstance(type);
                 if (command.Matches(args))
                 {
-                    if (command.IsProjectCommand != File.Exists("./.slipe"))
+                    bool isProject = File.Exists("./.slipe");
+                    switch (command.CommandType)
                     {
-                        if (command.IsProjectCommand)
-                        {
-                            throw new SlipeException(string.Format("'{0}' can only be executed in a slipe project directory", args[0]));
-                        } else
-                        {
-                            throw new SlipeException(string.Format("'{0}' can not be executed in a slipe project directory", args[0]));
-                        }
+                        case CommandType.NonProject:
+                            if (isProject)
+                            {
+                                throw new SlipeException(string.Format("'{0}' can not be executed in a slipe project directory", args[0]));
+                            }
+                            break;
+                        case CommandType.Project:
+                            if (!isProject)
+                            {
+                                throw new SlipeException(string.Format("'{0}' can only be executed in a slipe project directory", args[0]));
+                            }
+                            break;
                     }
 
                     List<string> arguments = new List<string>(args);

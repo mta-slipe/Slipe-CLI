@@ -5,7 +5,7 @@
 :: Request admin rights
 if not "%1"=="am_admin" (
 	call :trace "Might be running as non-admin, elevating"
-	powershell start -verb runas '%0' am_admin & exit /b 0
+	powershell start -verb runas '%0' am_admin -Wait & exit /b 0
 )
 
 :: We're working in current script's directory

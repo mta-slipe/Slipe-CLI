@@ -10,7 +10,7 @@ namespace Slipe.Commands
         protected List<string> parameters;
 
         public abstract string Template { get; }
-        public abstract bool IsProjectCommand { get; }
+        public abstract CommandType CommandType { get; }
         
         public abstract void Run();
 

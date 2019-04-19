@@ -6,6 +6,6 @@ namespace Slipe.Commands.Global
 {
     abstract class GlobalCommand: Command
     {
-        public override bool IsProjectCommand => false;
+        public override CommandType CommandType => CommandType.Global;
     }
 }

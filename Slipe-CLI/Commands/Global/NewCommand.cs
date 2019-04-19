@@ -10,6 +10,7 @@ namespace Slipe.Commands.Global
     class NewCommand : GlobalCommand
     {
         public override string Template => "new";
+        public override CommandType CommandType => CommandType.NonProject;
 
         public override void Run()
         {

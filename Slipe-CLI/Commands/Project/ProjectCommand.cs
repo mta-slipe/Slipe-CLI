@@ -7,7 +7,7 @@ namespace Slipe.Commands.Project
 {
     abstract class ProjectCommand : Command
     {
-        public override bool IsProjectCommand => true;
+        public override CommandType CommandType => CommandType.Project;
         protected SlipeModule targetModule;
         protected bool targetsModule;
         protected SlipeConfig config;

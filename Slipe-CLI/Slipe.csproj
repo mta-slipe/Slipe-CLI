@@ -11,6 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="helpers\GSharpTools.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="helpers\log4net.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="helpers\pathed.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="install.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

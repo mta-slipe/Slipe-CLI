@@ -11,17 +11,30 @@ namespace Slipe
 {
     class ConfigHelper
     {
-        public static void Write(SlipeConfig config)
+        public static void Write(SlipeConfig config, string path = "./.slipe")
         {
-            File.WriteAllText("./.slipe", JsonConvert.SerializeObject(config, new JsonSerializerSettings()
+            File.WriteAllText(path, JsonConvert.SerializeObject(config, new JsonSerializerSettings()
             {
                 Formatting = Formatting.Indented
             }));
         }
 
-        public static SlipeConfig Read()
+        public static void WriteModule(SlipeModule module, string path)
         {
-            return JsonConvert.DeserializeObject<SlipeConfig>(File.ReadAllText("./.slipe"));
+            File.WriteAllText(path, JsonConvert.SerializeObject(module, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            }));
+        }
+
+        public static SlipeConfig Read(string path = "./.slipe")
+        {
+            return JsonConvert.DeserializeObject<SlipeConfig>(File.ReadAllText(path));
+        }
+
+        public static SlipeModule ReadModule(string path)
+        {
+            return JsonConvert.DeserializeObject<SlipeModule>(File.ReadAllText(path));
         }
     }
 

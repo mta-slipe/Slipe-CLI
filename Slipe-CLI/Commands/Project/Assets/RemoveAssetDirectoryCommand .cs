@@ -7,7 +7,7 @@ namespace Slipe.Commands.Project.Assets
 {
     class RemoveAssetDirectoryCommand : ProjectCommand
     {
-        public override string Template => "add-assets";
+        public override string Template => "remove-assets";
 
         public override void Run()
         {
