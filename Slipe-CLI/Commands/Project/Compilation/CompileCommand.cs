@@ -92,7 +92,15 @@ namespace Slipe.Commands.Project
         private void CompileSourceFiles(string directory, string to, string[] dlls, bool isModule = false)
         {
             string[] pathSplits = directory.Split("\\");
+            string[] attributes = {
+                "Slipe.Shared.Elements.DefaultElementClassAttribute",
+                "Slipe.Shared.Elements.DefaultElementConstructorAttribute",
+            };
             string command = @"dotnet .\Slipe\Compiler\CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c ";
+            if(attributes.Length > 0)
+            {
+                command += " -a " + string.Join(";", attributes);
+            }
             command += " -l " + string.Join(";", dlls);
 
             if (isModule)
