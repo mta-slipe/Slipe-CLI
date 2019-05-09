@@ -9,6 +9,8 @@ namespace Slipe.Commands.Global
 {
     class NewCommand : GlobalCommand
     {
+        const string coreUrl = "http://mta-slipe.com/downloads/core.zip";
+
         public override string Template => "new";
         public override CommandType CommandType => CommandType.NonProject;
 
@@ -31,7 +33,7 @@ namespace Slipe.Commands.Global
                 Directory.CreateDirectory(directory);
             }
 
-            new WebClient().DownloadFile("http://mta-slipe.com/slipe-core.zip", directory + ".zip");
+            new WebClient().DownloadFile(coreUrl, directory + ".zip");
 
             ZipFile.ExtractToDirectory(directory + ".zip", directory);
             File.Delete(directory + ".zip");

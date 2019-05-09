@@ -9,34 +9,29 @@ namespace Slipe.Commands.Project
 {
     class UpdateCoreCommand : ProjectCommand
     {
+        const string coreUrl = "http://mta-slipe.com/downloads/core.zip";
+
         public override string Template => "update-core";
 
         public override void Run()
         {
+            UpdateCoreModule();
+        }
+
+        private void UpdateCoreModule()
+        {
             string name = string.Format("./slipe-{0}", DateTime.Now.ToShortDateString());
             string path = name + ".zip";
 
-            new WebClient().DownloadFile("http://mta-slipe.com/slipe-core.zip", path);
+            new WebClient().DownloadFile(coreUrl, path);
 
             ZipFile.ExtractToDirectory(path, name);
 
             // copy Slipe/Core from zip to project
             string sourcePath = name + "/Slipe/Core";
             string destinationPath = "./Slipe/Core";
-            if (Directory.Exists(destinationPath))
-            {
-                Directory.Delete(destinationPath, true);
-            }
-
-            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
-            {
-                Directory.CreateDirectory(dirPath.Replace(sourcePath, destinationPath));
-            }
-
-            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
-            {
-                File.Copy(newPath, newPath.Replace(sourcePath, destinationPath), true);
-            }
+            CopyFiles(sourcePath, destinationPath);
+            CopyFiles(name + "/Slipe/Compiler", "./Slipe/Compiler");
 
             SlipeConfig newConfig = ConfigHelper.Read(name + "/.slipe");
             SlipeModule newModuleConfig = new SlipeModule();
@@ -65,6 +60,24 @@ namespace Slipe.Commands.Project
             // clean up
             Directory.Delete(name, true);
             File.Delete(path);
+        }
+
+        private void CopyFiles(string sourcePath, string destinationPath)
+        {
+            if (Directory.Exists(destinationPath))
+            {
+                Directory.Delete(destinationPath, true);
+            }
+
+            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(sourcePath, destinationPath));
+            }
+
+            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourcePath, destinationPath), true);
+            }
         }
     }
 }
