@@ -38,25 +38,25 @@ namespace Slipe
         }
     }
 
-    struct SlipeConfig
+    class SlipeConfig
     {
         public SlipeConfigCompileTarget compileTargets;
 
-        public List<string> dlls;
-        public List<string> systemComponents;
-        public List<SlipeAssetDirectory> assetDirectories;
-        public List<SlipeModule> modules;
+        public List<string> dlls = new List<string>();
+        public List<string> systemComponents = new List<string>();
+        public List<SlipeAssetDirectory> assetDirectories = new List<SlipeAssetDirectory>();
+        public List<SlipeModule> modules = new List<SlipeModule>();
         public string clientMinVersion;
         public string serverMinVersion;
     }
 
-    struct SlipeConfigCompileTarget
+    class SlipeConfigCompileTarget
     {
-        public List<string> client;
-        public List<string> server;
+        public List<string> client = new List<string>();
+        public List<string> server = new List<string>();
     }
 
-    struct SlipeModule
+    class SlipeModule
     {
         public string type;
         public string name;
@@ -64,14 +64,14 @@ namespace Slipe
 
         public SlipeConfigCompileTarget compileTargets;
 
-        public List<string> dlls;
-        public List<string> attributes;
-        public List<string> systemComponents;
-        public List<string> backingLua;
-        public List<SlipeAssetDirectory> assetDirectories;
+        public List<string> dlls = new List<string>();
+        public List<string> attributes = new List<string>();
+        public List<string> systemComponents = new List<string>();
+        public List<string> backingLua = new List<string>();
+        public List<SlipeAssetDirectory> assetDirectories = new List<SlipeAssetDirectory>();
     }
 
-    struct SlipeAssetDirectory
+    class SlipeAssetDirectory
     {
         public string path;
         public bool downloads;

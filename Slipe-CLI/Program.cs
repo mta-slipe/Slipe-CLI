@@ -58,13 +58,15 @@ namespace Slipe
                             }
                             break;
                         case CommandType.Project:
+                            // force slipe file to update to latest structure
+                            ConfigHelper.Write(ConfigHelper.Read());
                             if (!isProject)
                             {
                                 throw new SlipeException(string.Format("'{0}' can only be executed in a slipe project directory", args[0]));
                             }
                             break;
                     }
-
+                    
                     List<string> arguments = new List<string>(args);
                     arguments.RemoveAt(0);
                     command.ParseArguments(arguments.ToArray());
