@@ -91,10 +91,14 @@ namespace Slipe.Commands.Project
             }
         }
 
-        private void CompileSourceFiles(string directory, string to, string[] dlls, bool isModule = false)
+        private void CompileSourceFiles(string directory, string to, string[] dlls, string[] attributes, bool isModule = false)
         {
             string[] pathSplits = directory.Split("\\");
-            string command = @"dotnet .\Slipe\Compiler\CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c ";
+            string command = @"dotnet .\Slipe\Compiler\CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c";
+            if(attributes.Length > 0)
+            {
+                command += " -a " + string.Join(";", attributes);
+            }
             command += " -l " + string.Join(";", dlls);
 
             if (isModule)
@@ -192,16 +196,27 @@ namespace Slipe.Commands.Project
             return dlls;
         }
 
+        private List<string> GetAttributes()
+        {
+            List<string> attributes = new List<string>();
+
+            foreach(SlipeModule module in config.modules)
+            {
+                foreach(string attribute in module.attributes)
+                {
+                    attributes.Add(attribute);
+                }
+            }
+
+            return attributes;
+        }
+
         private void CompileProject()
         {
             PrepareBuildDirectory("./Slipe/Build");
 
-            List<string> dllList = GetDlls();
-            string[] dlls = new string[dllList.Count];
-            for (int i = 0; i < dllList.Count; i++)
-            {
-                dlls[i] = dllList[i];
-            }
+            string[] dlls = GetDlls().ToArray();
+            string[] attributes = GetAttributes().ToArray();
 
             if (!options.ContainsKey("server-only"))
             {
@@ -210,7 +225,7 @@ namespace Slipe.Commands.Project
                     CopySourceFiles("./Source/" + project, "./Slipe/Build/Client");
                 }
                 PrepareDistDirectory("./Dist/Client");
-                CompileSourceFiles("./Slipe/Build/Client", "Dist/Client", dlls);
+                CompileSourceFiles("./Slipe/Build/Client", "Dist/Client", dlls, attributes);
             }
 
             if (!options.ContainsKey("client-only"))
@@ -220,7 +235,7 @@ namespace Slipe.Commands.Project
                     CopySourceFiles("./Source/" + project, "./Slipe/Build/Server");
                 }
                 PrepareDistDirectory("./Dist/Server");
-                CompileSourceFiles("./Slipe/Build/Server", "Dist/Server", dlls);
+                CompileSourceFiles("./Slipe/Build/Server", "Dist/Server", dlls, attributes);
             }
         }
 
@@ -241,7 +256,8 @@ namespace Slipe.Commands.Project
             string serverDistPath = basePath + "/Lua/Compiled/Server";
             string dllPath = basePath + "/DLL";
 
-            List<string> dlls = GetDlls(moduleName);
+            string[] dlls = GetDlls(moduleName).ToArray();
+            string[] attributes = GetAttributes().ToArray();
 
             PrepareBuildDirectory(buildPath);
 
@@ -253,7 +269,7 @@ namespace Slipe.Commands.Project
                     CopyDlls(basePath + "/" + project, dllPath);
                     CopySourceFiles(basePath + "/" + project, clientBuildPath + "/" + project);
                 }
-                CompileSourceFiles(clientBuildPath, clientDistPath, dlls.ToArray(), true);
+                CompileSourceFiles(clientBuildPath, clientDistPath, dlls, attributes, true);
             }
 
 
@@ -265,7 +281,7 @@ namespace Slipe.Commands.Project
                     CopyDlls(basePath + "/" + project, dllPath);
                     CopySourceFiles(basePath + "/" + project, serverBuildPath + "/" + project);
                 }
-                CompileSourceFiles(serverBuildPath, serverDistPath, dlls.ToArray(), true);
+                CompileSourceFiles(serverBuildPath, serverDistPath, dlls, attributes, true);
 
             }
         }

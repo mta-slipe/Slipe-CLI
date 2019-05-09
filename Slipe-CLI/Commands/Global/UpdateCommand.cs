@@ -17,57 +17,72 @@ namespace Slipe.Commands.Global
 
         public override void Run()
         {
-            string name = string.Format("./slipe-update-{0}", DateTime.Now.ToShortDateString().Replace("/","-"));
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                WindowsUpdate();
+            } else
+            {
+                LinuxUpdate();
+            }
+        }
+
+        private void WindowsUpdate()
+        {
+
+            string name = string.Format("./slipe-update-{0}.exe", DateTime.Now.ToShortDateString().Replace("/", "-").Replace("\\", "-"));
+
+            new WebClient().DownloadFile("https://mta-slipe.com/downloads/SlipeInstaller.exe", name);
+
+            ProcessStartInfo processInfo;
+            Process process;
+
+            processInfo = new ProcessStartInfo(name);
+            processInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+
+            processInfo.CreateNoWindow = true;
+            processInfo.UseShellExecute = false;
+            // *** Redirect the output ***
+            processInfo.RedirectStandardError = true;
+            processInfo.RedirectStandardOutput = true;
+
+            process = Process.Start(processInfo);
+        }
+
+        private void LinuxUpdate()
+        {
+            string name = string.Format("./slipe-update-{0}", DateTime.Now.ToShortDateString().Replace("/", "-"));
             string path = name + ".zip";
 
             new WebClient().DownloadFile("http://mta-slipe.com/slipe-cli.zip", path);
 
             ZipFile.ExtractToDirectory(path, name);
 
-            string command = "";
             ProcessStartInfo processInfo;
             Process process;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                command = ".\\install.bat";
-                processInfo = new ProcessStartInfo("cmd.exe", string.Format("/c {1}", name, command));
-                processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;
 
-                processInfo.CreateNoWindow = true;
-                processInfo.UseShellExecute = false;
-                // *** Redirect the output ***
-                processInfo.RedirectStandardError = true;
-                processInfo.RedirectStandardOutput = true;
+            processInfo = new ProcessStartInfo("sudo", "chmod +x install.sh");
+            processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;
 
-                process = Process.Start(processInfo);
-                process.WaitForExit();
-            } else
-            {
-                processInfo = new ProcessStartInfo("sudo", "chmod +x install.sh");
-                processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;
+            processInfo.CreateNoWindow = true;
+            processInfo.UseShellExecute = false;
+            // *** Redirect the output ***
+            processInfo.RedirectStandardError = true;
+            processInfo.RedirectStandardOutput = true;
 
-                processInfo.CreateNoWindow = true;
-                processInfo.UseShellExecute = false;
-                // *** Redirect the output ***
-                processInfo.RedirectStandardError = true;
-                processInfo.RedirectStandardOutput = true;
+            process = Process.Start(processInfo);
+            process.WaitForExit();
 
-                process = Process.Start(processInfo);
-                process.WaitForExit();
+            processInfo = new ProcessStartInfo("sudo", "./install.sh");
+            processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;
 
-                processInfo = new ProcessStartInfo("sudo", "./install.sh");
-                processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;
+            processInfo.CreateNoWindow = true;
+            processInfo.UseShellExecute = false;
+            // *** Redirect the output ***
+            processInfo.RedirectStandardError = true;
+            processInfo.RedirectStandardOutput = true;
 
-                processInfo.CreateNoWindow = true;
-                processInfo.UseShellExecute = false;
-                // *** Redirect the output ***
-                processInfo.RedirectStandardError = true;
-                processInfo.RedirectStandardOutput = true;
-
-                process = Process.Start(processInfo);
-                process.WaitForExit();
-            }
-
+            process = Process.Start(processInfo);
+            process.WaitForExit();
 
             int exitCode = process.ExitCode;
 

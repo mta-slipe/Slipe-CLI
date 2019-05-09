@@ -65,6 +65,7 @@ namespace Slipe
         public SlipeConfigCompileTarget compileTargets;
 
         public List<string> dlls;
+        public List<string> attributes;
         public List<string> systemComponents;
         public List<string> backingLua;
         public List<SlipeAssetDirectory> assetDirectories;
