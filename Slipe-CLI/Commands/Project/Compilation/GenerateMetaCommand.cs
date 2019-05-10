@@ -109,6 +109,11 @@ namespace Slipe.Commands.Project
 
         private void CreateMainElements()
         {
+            XmlElement projectPathsElement = meta.CreateElement("script");
+            projectPathsElement.SetAttribute("src", "Dist/projectPaths.lua");
+            projectPathsElement.SetAttribute("type", "shared");
+            root.AppendChild(projectPathsElement);
+
             XmlElement element = meta.CreateElement("script");
             element.SetAttribute("src", "Slipe/Lua/Main/main.lua");
             element.SetAttribute("type", "shared");
@@ -127,18 +132,18 @@ namespace Slipe.Commands.Project
         {
             foreach(SlipeAssetDirectory directory in config.assetDirectories)
             {
-                IndexDirectoryForFiles(directory.path, directory.downloads);
+                IndexDirectoryForFiles(directory.path, directory.downloads, directory.extension);
             }
             foreach(SlipeModule module in config.modules)
             {
                 foreach (SlipeAssetDirectory directory in module.assetDirectories)
                 {
-                    IndexDirectoryForFiles(module.path + "/" + directory.path, directory.downloads);
+                    IndexDirectoryForFiles(module.path + "/" + directory.path, directory.downloads, directory.extension);
                 }
             }
         }
 
-        private void IndexDirectoryForFiles(string directory, bool downloads = true)
+        private void IndexDirectoryForFiles(string directory, bool downloads = true, string extension = null)
         {
             Console.WriteLine("Indexing {0}", directory);
             if (!Directory.Exists(directory))
@@ -147,19 +152,22 @@ namespace Slipe.Commands.Project
             }
             foreach (string file in Directory.GetFiles(directory, "*", SearchOption.AllDirectories))
             {
-                string relativePath = file.Replace("\\", "/");
-                if (relativePath.StartsWith("."))
+                if (extension == null || file.EndsWith(extension))
                 {
-                    relativePath = relativePath.Substring(1);
+                    string relativePath = file.Replace("\\", "/");
+                    if (relativePath.StartsWith("."))
+                    {
+                        relativePath = relativePath.Substring(1);
+                    }
+                    if (relativePath.StartsWith("/"))
+                    {
+                        relativePath = relativePath.Substring(1);
+                    }
+                    XmlElement element = meta.CreateElement("file");
+                    element.SetAttribute("src", relativePath);
+                    element.SetAttribute("download", downloads.ToString().ToLower());
+                    root.AppendChild(element);
                 }
-                if (relativePath.StartsWith("/"))
-                {
-                    relativePath = relativePath.Substring(1);
-                }
-                XmlElement element = meta.CreateElement("file");
-                element.SetAttribute("src", relativePath);
-                element.SetAttribute("download", downloads.ToString().ToLower());
-                root.AppendChild(element);
             }
         }
     }

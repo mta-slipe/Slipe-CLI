@@ -46,7 +46,7 @@ if %ERRORLEVEL% EQU 16 call :trace "***FATAL ERROR***" & goto :robo_failed
 if %ERRORLEVEL% EQU 15 call :trace "OKCOPY + FAIL + MISMATCHES + XTRA" & goto :robo_failed
 if %ERRORLEVEL% EQU 14 call :trace "FAIL + MISMATCHES + XTRA" & goto :robo_failed
 if %ERRORLEVEL% EQU 13 call :trace "OKCOPY + FAIL + MISMATCHES" & goto :robo_failed
-if %ERRORLEVEL% EQU 12 call :trace "FAIL + MISMATCHE"S& goto :robo_failed
+if %ERRORLEVEL% EQU 12 call :trace "FAIL + MISMATCHES" & goto :robo_failed
 if %ERRORLEVEL% EQU 11 call :trace "OKCOPY + FAIL + XTRA" & goto :robo_failed
 if %ERRORLEVEL% EQU 10 call :trace "FAIL + XTRA" & goto :robo_failed
 if %ERRORLEVEL% EQU 9 call :trace "OKCOPY + FAIL" & goto :robo_failed

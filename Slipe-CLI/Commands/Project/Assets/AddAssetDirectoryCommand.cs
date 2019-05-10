@@ -20,7 +20,8 @@ namespace Slipe.Commands.Project.Assets
             SlipeAssetDirectory directory = new SlipeAssetDirectory
             {
                 path = assetDirectory,
-                downloads = ! options.ContainsKey("no-download")
+                downloads = ! options.ContainsKey("no-download"),
+                extension = options.ContainsKey("extension") ? options["extension"] : null
             };
 
             if (targetsModule)

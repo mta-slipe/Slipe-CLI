@@ -74,5 +74,6 @@ namespace Slipe
     {
         public string path;
         public bool downloads;
+        public string extension;
     }
 }

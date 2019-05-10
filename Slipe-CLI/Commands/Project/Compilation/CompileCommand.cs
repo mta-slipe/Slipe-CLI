@@ -21,6 +21,8 @@ namespace Slipe.Commands.Project
                 CompileProject();
             }
 
+            CreateProjectPathsFile();
+
             GenerateMetaCommand generateMeta = new GenerateMetaCommand();
             generateMeta.ParseArguments(new string[0]);
             generateMeta.Run();
@@ -54,7 +56,7 @@ namespace Slipe.Commands.Project
             string[] files = Directory.GetFiles(from, "", SearchOption.AllDirectories);
             foreach(string file in files)
             {
-                if (! file.Contains("\\obj\\"))
+                if (! file.Contains("\\obj\\") || options.ContainsKey("generated") && file.EndsWith(".g.cs"))
                 {
                     string target = file.Replace(from, "");
                     string fullTarget = to + "/" + target;
@@ -227,7 +229,7 @@ namespace Slipe.Commands.Project
             SlipeModule moduleConfig = config.modules.Find(module => module.name == moduleName);
             if (moduleConfig.type != "internal")
             {
-                throw new SlipeException("Only internal modules can be compiled");
+                throw new SlipeException("Only internal modules can be compiled.");
             }
 
             string basePath = moduleConfig.path;
@@ -266,6 +268,39 @@ namespace Slipe.Commands.Project
                 CompileSourceFiles(serverBuildPath, serverDistPath, dlls.ToArray(), true);
 
             }
+        }
+
+        private void CreateProjectPathsFile()
+        {
+            string projectPaths = "projectPaths = {\n";
+
+            foreach(var project in config.compileTargets.server)
+            {
+                string[] splits = project.Split("/");
+                projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], "Source/" + project);
+            }
+            foreach(var project in config.compileTargets.client)
+            {
+                string[] splits = project.Split("/");
+                projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], "Source/" + project);
+            }
+
+            foreach(var module in config.modules)
+            {
+                foreach (var project in module.compileTargets.server)
+                {
+                    string[] splits = project.Split("/");
+                    projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], module.path + "/" + project);
+                }
+                foreach (var project in module.compileTargets.client)
+                {
+                    string[] splits = project.Split("/");
+                    projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], module.path + "/" + project);
+                }
+            }
+
+            projectPaths += "}";
+            File.WriteAllText("Dist/projectPaths.lua", projectPaths);
         }
 
     }
