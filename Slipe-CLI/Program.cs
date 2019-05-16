@@ -16,8 +16,11 @@ namespace Slipe
             {
                 //args = new string[]
                 //{
-                //    "update-module",
-                //    "https://mta-slipe.com/SlipeCoreModule.zip",
+                //    //"exports",
+                //    //"compile",
+                //    //"-module",
+                //    //"SlipeCore",
+                //    //"https://mta-slipe.com/SlipeCoreModule.zip",
                 //};
                 new CLI(args);
             } catch(SlipeException e)

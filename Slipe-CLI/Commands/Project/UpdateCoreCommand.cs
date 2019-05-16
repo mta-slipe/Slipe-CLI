@@ -20,7 +20,7 @@ namespace Slipe.Commands.Project
 
         private void UpdateCoreModule()
         {
-            string name = string.Format("./slipe-{0}", DateTime.Now.ToShortDateString());
+            string name = string.Format("./slipe-{0}", DateTime.Now.ToShortDateString().Replace("/", "-").Replace("\\", "-"));
             string path = name + ".zip";
 
             new WebClient().DownloadFile(coreUrl, path);

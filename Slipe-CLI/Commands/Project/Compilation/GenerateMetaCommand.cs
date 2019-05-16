@@ -34,7 +34,10 @@ namespace Slipe.Commands.Project
             CreateMainElements();
             CreateFileElements(config);
             CreateMinVersion();
-            
+
+            CreateExportElements(config);
+
+
             meta.AppendChild(root);
             meta.Save("./meta.xml");
 
@@ -140,6 +143,17 @@ namespace Slipe.Commands.Project
                 {
                     IndexDirectoryForFiles(module.path + "/" + directory.path, directory.downloads, directory.extension);
                 }
+            }
+        }
+
+        private void CreateExportElements(SlipeConfig config)
+        {
+            foreach(SlipeConfigExport export in config.exports)
+            {
+                XmlElement element = meta.CreateElement("export");
+                element.SetAttribute("function", export.name.Replace(".", ""));
+                element.SetAttribute("type", export.type);
+                root.AppendChild(element);
             }
         }
 

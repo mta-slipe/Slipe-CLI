@@ -103,7 +103,10 @@ namespace Slipe.Commands.Project
         {
             foreach (SlipeModule module in config.modules)
             {
-                CompileModule(module.name);
+                if (module.type == "internal")
+                {
+                    CompileModule(module.name);
+                }
             }
 
             CompileCommand compile = new CompileCommand();

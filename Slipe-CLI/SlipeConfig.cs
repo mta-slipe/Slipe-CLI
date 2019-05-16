@@ -46,6 +46,7 @@ namespace Slipe
         public List<string> systemComponents = new List<string>();
         public List<SlipeAssetDirectory> assetDirectories = new List<SlipeAssetDirectory>();
         public List<SlipeModule> modules = new List<SlipeModule>();
+        public List<SlipeConfigExport> exports = new List<SlipeConfigExport>();
         public string clientMinVersion;
         public string serverMinVersion;
     }
@@ -76,5 +77,11 @@ namespace Slipe
         public string path;
         public bool downloads;
         public string extension;
+    }
+
+    class SlipeConfigExport
+    {
+        public string name;
+        public string type;
     }
 }

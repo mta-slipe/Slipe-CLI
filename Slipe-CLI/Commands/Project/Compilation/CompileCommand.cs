@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Slipe.Commands.Project.Exports;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -22,6 +23,17 @@ namespace Slipe.Commands.Project
             }
 
             CreateProjectPathsFile();
+
+            if (options.ContainsKey("exports"))
+            {
+                IndexExportsCommand exportsCommand = new IndexExportsCommand();
+                exportsCommand.ParseArguments(new string[0]);
+                exportsCommand.Run();
+                exportsCommand.SaveConfig();
+                this.config = ConfigHelper.Read();
+            }
+
+            CreateExportsFiles(config);
 
             GenerateMetaCommand generateMeta = new GenerateMetaCommand();
             generateMeta.ParseArguments(new string[0]);
@@ -317,6 +329,30 @@ namespace Slipe.Commands.Project
 
             projectPaths += "}";
             File.WriteAllText("Dist/projectPaths.lua", projectPaths);
+        }
+
+        private void CreateExportsFiles(SlipeConfig config)
+        {
+            string clientExports = "";
+            foreach (SlipeConfigExport export in config.exports) {
+                if (export.type == "client")
+                {
+                    clientExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.name.Replace(".", ""), export.name);
+                }
+            }
+            clientExports += "";
+            File.WriteAllText("Dist/Client/Exports.lua", clientExports);
+
+            string serverExports = "";
+            foreach (SlipeConfigExport export in config.exports)
+            {
+                if (export.type == "server")
+                {
+                    serverExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.name.Replace(".", ""), export.name);
+                }
+            }
+            serverExports += "";
+            File.WriteAllText("Dist/Server/Exports.lua", serverExports);
         }
 
     }
