@@ -148,10 +148,10 @@ namespace Slipe.Commands.Project
 
         private void CreateExportElements(SlipeConfig config)
         {
-            foreach(SlipeConfigExport export in config.exports)
+            foreach(SlipeExport export in config.exports)
             {
                 XmlElement element = meta.CreateElement("export");
-                element.SetAttribute("function", export.name.Replace(".", ""));
+                element.SetAttribute("function", export.niceName);
                 element.SetAttribute("type", export.type);
                 root.AppendChild(element);
             }

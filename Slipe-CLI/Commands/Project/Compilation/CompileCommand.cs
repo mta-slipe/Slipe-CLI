@@ -334,21 +334,21 @@ namespace Slipe.Commands.Project
         private void CreateExportsFiles(SlipeConfig config)
         {
             string clientExports = "";
-            foreach (SlipeConfigExport export in config.exports) {
+            foreach (SlipeExport export in config.exports) {
                 if (export.type == "client")
                 {
-                    clientExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.name.Replace(".", ""), export.name);
+                    clientExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.niceName, export.name);
                 }
             }
             clientExports += "";
             File.WriteAllText("Dist/Client/Exports.lua", clientExports);
 
             string serverExports = "";
-            foreach (SlipeConfigExport export in config.exports)
+            foreach (SlipeExport export in config.exports)
             {
                 if (export.type == "server")
                 {
-                    serverExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.name.Replace(".", ""), export.name);
+                    serverExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.niceName, export.name);
                 }
             }
             serverExports += "";

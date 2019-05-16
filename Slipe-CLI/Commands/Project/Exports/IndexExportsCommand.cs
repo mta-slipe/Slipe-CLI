@@ -14,7 +14,7 @@ namespace Slipe.Commands.Project.Exports
 
         public override void Run()
         {
-            config.exports = new List<SlipeConfigExport>();
+            config.exports = new List<SlipeExport>();
 
             IndexDirectory("./Slipe/Build/Server", "server");
             IndexDirectory("./Slipe/Build/Client", "client");
@@ -54,14 +54,15 @@ namespace Slipe.Commands.Project.Exports
 
             foreach (Assembly assembly in assemblies)
             {
-                string[] exports = GetAssemblyExports(assembly);
-                foreach (string export in exports)
+                SlipeExport[] exports = GetAssemblyExports(assembly);
+                foreach (SlipeExport export in exports)
                 {
-                    config.exports.Add(new SlipeConfigExport()
+                    export.type = type;
+                    if (export.niceName == null)
                     {
-                        name = export,
-                        type = type
-                    });
+                        export.niceName = export.name.Replace(".", "");
+                    }
+                    config.exports.Add(export);
                 }
             }
         }
@@ -94,7 +95,7 @@ namespace Slipe.Commands.Project.Exports
             return null;
         }
 
-        public string[] GetAssemblyExports(Assembly assembly)
+        public SlipeExport[] GetAssemblyExports(Assembly assembly)
         {
             var types = assembly.GetTypes();
 
@@ -103,11 +104,19 @@ namespace Slipe.Commands.Project.Exports
                 .Where(m => m.GetCustomAttributes(ExportAttributeType, false).Length > 0)
                 .ToArray();
 
-            string[] exports = new string[methods.Length];
+            SlipeExport[] exports = new SlipeExport[methods.Length];
             for (int i = 0; i < methods.Length; i++)
             {
                 MethodInfo method = methods[i];
-                exports[i] = method.DeclaringType.FullName + "." + method.Name;
+                dynamic attribute = method.GetCustomAttribute(ExportAttributeType, false);
+                string name = attribute.Name;
+                string fullname = method.DeclaringType.FullName + "." + method.Name;
+
+                exports[i] = new SlipeExport()
+                {
+                    name = fullname,
+                    niceName = name,
+                };
                 if (! method.IsStatic)
                 {
                     throw new SlipeException("Only static methods can be exported.");
