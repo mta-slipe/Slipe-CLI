@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Slipe.Commands.Project
@@ -120,15 +121,31 @@ namespace Slipe.Commands.Project
             Console.WriteLine(command);
 
             Process process = new Process();
-            var startInfo = new ProcessStartInfo
+            ProcessStartInfo startInfo;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                WindowStyle = ProcessWindowStyle.Normal,
-                CreateNoWindow = false,
-                FileName = "cmd.exe",
-                Arguments = "/C " + command,
-                RedirectStandardInput = true,
-                UseShellExecute = false
-            };
+                startInfo = new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    CreateNoWindow = false,
+                    FileName = "cmd.exe",
+                    Arguments = "/C " + command,
+                    RedirectStandardInput = true,
+                    UseShellExecute = false
+                };
+            } else
+            {
+                startInfo = new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    CreateNoWindow = false,
+                    FileName = "dotnet",
+                    Arguments = command.Replace("dotnet " , ""),
+                    RedirectStandardInput = true,
+                    UseShellExecute = false
+                };
+            }
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
