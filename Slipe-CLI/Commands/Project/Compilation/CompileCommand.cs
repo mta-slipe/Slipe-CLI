@@ -69,7 +69,7 @@ namespace Slipe.Commands.Project
             string[] files = Directory.GetFiles(from, "", SearchOption.AllDirectories);
             foreach(string file in files)
             {
-                if (! file.Contains("\\obj\\") || options.ContainsKey("generated") && file.EndsWith(".g.cs"))
+                if ((! file.Contains("\\obj\\") && !file.Contains("/obj/")) || options.ContainsKey("generated") && file.EndsWith(".g.cs"))
                 {
                     string target = file.Replace(from, "");
                     string fullTarget = to + "/" + target;
@@ -106,8 +106,7 @@ namespace Slipe.Commands.Project
 
         private void CompileSourceFiles(string directory, string to, string[] dlls, string[] attributes, bool isModule = false)
         {
-            string[] pathSplits = directory.Split("\\");
-            string command = @"dotnet .\Slipe\Compiler\CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c";
+            string command = @"dotnet ./Slipe/Compiler/CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c";
             if(attributes.Length > 0)
             {
                 command += " -a " + string.Join(";", attributes);
@@ -164,7 +163,7 @@ namespace Slipe.Commands.Project
             string[] files = Directory.GetFiles(from, "", SearchOption.AllDirectories);
             foreach (string file in files)
             {
-                if (!file.Contains("\\obj\\") && file.EndsWith(".dll"))
+                if (!file.Contains("\\obj\\") && !file.Contains("/obj/") && file.EndsWith(".dll"))
                 {
                     string fullTarget = to + "/" + Path.GetFileName(file);
 
