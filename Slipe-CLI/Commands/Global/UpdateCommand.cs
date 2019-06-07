@@ -53,24 +53,12 @@ namespace Slipe.Commands.Global
             string name = string.Format("./slipe-update-{0}", DateTime.Now.ToShortDateString().Replace("/", "-"));
             string path = name + ".zip";
 
-            new WebClient().DownloadFile("http://mta-slipe.com/slipe-cli.zip", path);
+            new WebClient().DownloadFile("https://mta-slipe.com/downloads/cli-linux.zip", path);
 
             ZipFile.ExtractToDirectory(path, name);
 
             ProcessStartInfo processInfo;
             Process process;
-
-            processInfo = new ProcessStartInfo("sudo", "chmod +x install.sh");
-            processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;
-
-            processInfo.CreateNoWindow = true;
-            processInfo.UseShellExecute = false;
-            // *** Redirect the output ***
-            processInfo.RedirectStandardError = true;
-            processInfo.RedirectStandardOutput = true;
-
-            process = Process.Start(processInfo);
-            process.WaitForExit();
 
             processInfo = new ProcessStartInfo("sudo", "./install.sh");
             processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;

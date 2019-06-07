@@ -98,7 +98,7 @@ namespace Slipe.Commands.Project
             string command = string.Format("restart {0}\n", resourceName);
             for (int i = 0; i < command.Length; i++)
             {
-                if (! keys.ContainsKey(command.Substring(i, 1)))
+                if (! keys.ContainsKey(command.Substring(i, 1).ToLower()))
                 {
                     throw new SlipeException("Slipe is unable to restart this resource because there is a '" + command.Substring(i, 1) + "' in the name.");
                 }
