@@ -9,8 +9,6 @@ namespace Slipe.Commands.Project
 {
     class UpdateCoreCommand : ProjectCommand
     {
-        const string coreUrl = "http://mta-slipe.com/downloads/core.zip";
-
         public override string Template => "update-core";
 
         public override void Run()
@@ -22,6 +20,11 @@ namespace Slipe.Commands.Project
         {
             string name = string.Format("./slipe-{0}", DateTime.Now.ToShortDateString().Replace("/", "-").Replace("\\", "-"));
             string path = name + ".zip";
+
+
+            string coreUrl = options.ContainsKey("dev") ? 
+                "https://development.mta-slipe.com/downloads/core.zip" : 
+                "https://mta-slipe.com/downloads/core.zip";
 
             new WebClient().DownloadFile(coreUrl, path);
 
