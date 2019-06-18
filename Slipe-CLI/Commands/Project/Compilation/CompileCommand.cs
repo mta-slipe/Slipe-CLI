@@ -35,6 +35,7 @@ namespace Slipe.Commands.Project
             }
 
             CreateExportsFiles(config);
+            CreateModuleTableFile(config);
 
             GenerateMetaCommand generateMeta = new GenerateMetaCommand();
             generateMeta.ParseArguments(new string[0]);
@@ -350,7 +351,8 @@ namespace Slipe.Commands.Project
         private void CreateExportsFiles(SlipeConfig config)
         {
             string clientExports = "";
-            foreach (SlipeExport export in config.exports) {
+            foreach (SlipeExport export in config.exports)
+            {
                 if (export.type == "client")
                 {
                     clientExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.niceName, export.name);
@@ -369,6 +371,18 @@ namespace Slipe.Commands.Project
             }
             serverExports += "";
             File.WriteAllText("Dist/Server/Exports.lua", serverExports);
+        }
+
+        private void CreateModuleTableFile(SlipeConfig config)
+        {
+            string moduleTable = "moduleTable = {";
+            foreach (SlipeModule module in config.modules)
+            {
+                moduleTable += string.Format("\"{0}\"", module.path);
+            }
+            moduleTable += "}";
+            File.WriteAllText("Dist/Client/Modules.lua", moduleTable);
+            File.WriteAllText("Dist/Server/Modules.lua", moduleTable);
         }
 
     }

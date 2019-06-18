@@ -84,5 +84,6 @@ namespace Slipe
         public string name;
         public string niceName;
         public string type;
+        public bool isHttp;
     }
 }

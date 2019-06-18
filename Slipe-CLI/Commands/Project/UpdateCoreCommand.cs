@@ -35,6 +35,7 @@ namespace Slipe.Commands.Project
             string destinationPath = "./Slipe/Core";
             CopyFiles(sourcePath, destinationPath);
             CopyFiles(name + "/Slipe/Compiler", "./Slipe/Compiler");
+            CopyFiles(name + "/Slipe/Lua", "./Slipe/Lua");
 
             SlipeConfig newConfig = ConfigHelper.Read(name + "/.slipe");
             SlipeModule newModuleConfig = new SlipeModule();

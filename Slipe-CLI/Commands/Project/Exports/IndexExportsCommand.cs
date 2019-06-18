@@ -115,7 +115,8 @@ namespace Slipe.Commands.Project.Exports
                 exports[i] = new SlipeExport()
                 {
                     name = fullname,
-                    niceName = name,
+                    niceName = name ?? fullname.Replace(".", ""),
+                    isHttp = attribute.IsHttp
                 };
                 if (! method.IsStatic)
                 {

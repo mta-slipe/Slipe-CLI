@@ -148,6 +148,7 @@ You will be able to stop sending usage data at any time using `slipe opt-out`");
                         {
                             Timeout = TimeSpan.FromMilliseconds(1000)
                         };
+                        client.DefaultRequestHeaders.Add("User-Agent", "Slipe CLI");
                         var response = await client.PostAsync("https://analytics.mta-slipe.com", content);
                     }
                 }

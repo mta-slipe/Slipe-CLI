@@ -37,6 +37,8 @@ namespace Slipe.Commands.Global
 
             ZipFile.ExtractToDirectory(directory + ".zip", directory);
             File.Delete(directory + ".zip");
+
+            File.Move(Path.Join(directory, "Resource.sln"), Path.Join(directory, name + ".sln"));
         }
     }
 }

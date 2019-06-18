@@ -153,6 +153,10 @@ namespace Slipe.Commands.Project
                 XmlElement element = meta.CreateElement("export");
                 element.SetAttribute("function", export.niceName);
                 element.SetAttribute("type", export.type);
+                if (export.isHttp)
+                {
+                    element.SetAttribute("http", "true");
+                }
                 root.AppendChild(element);
             }
         }
