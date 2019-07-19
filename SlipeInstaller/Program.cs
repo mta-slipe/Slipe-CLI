@@ -10,11 +10,16 @@ namespace SlipeInstaller
 {
     class Program
     {
-        const string url = "https://mta-slipe.com/downloads/cli.zip";
+        static string url = "https://mta-slipe.com/downloads/cli.zip";
 
         static void Main(string[] args)
         {
-            LaunchAsAdmin();
+            if (args.Length >= 1 && args[0] == "dev")
+            {
+                Console.WriteLine("Updating from dev environment");
+                url = "https://development.mta-slipe.com/downloads/cli.zip";
+            }
+            LaunchAsAdmin(string.Join(" ", args));
 
             Install();
 
@@ -63,14 +68,15 @@ namespace SlipeInstaller
             }
         }
 
-        static void LaunchAsAdmin()
+        static void LaunchAsAdmin(string args)
         {
             if (!IsRunAsAdmin())
             {
                 ProcessStartInfo proc = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location)
                 {
                     UseShellExecute = true,
-                    Verb = "runas"
+                    Verb = "runas",
+                    Arguments = args
                 };
 
                 try
