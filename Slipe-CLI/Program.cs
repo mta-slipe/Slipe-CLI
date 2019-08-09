@@ -62,7 +62,11 @@ namespace Slipe
         {
             if (args.Length < 1)
             {
-                throw new SlipeException("Please specify a command, Syntax: \nslipe {command}");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please specify a command, Syntax: \nslipe {command}");
+                Console.WriteLine("You can use `slipe help` to view a list of commands");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                return;
             }
 
             foreach (Type type in
