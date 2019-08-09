@@ -43,7 +43,7 @@ namespace Slipe
             } catch(SlipeException e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"Slipe: error SLIPE-ERROR: {e.Message}");
                 Console.ForegroundColor = ConsoleColor.Gray;
                 cli?.analyticsTask?.Wait();
                 return -1;

@@ -1,4 +1,5 @@
-﻿using Slipe.Commands.Project.Exports;
+﻿using Slipe.Commands.Project.Compilation;
+using Slipe.Commands.Project.Exports;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,6 +41,10 @@ namespace Slipe.Commands.Project
             GenerateMetaCommand generateMeta = new GenerateMetaCommand();
             generateMeta.ParseArguments(new string[0]);
             generateMeta.Run();
+
+            CheckValidityCommand checkValidityCommand = new CheckValidityCommand();
+            checkValidityCommand.ParseArguments(new string[0]);
+            checkValidityCommand.Run();
         }
 
         private void PrepareBuildDirectory(string path)
