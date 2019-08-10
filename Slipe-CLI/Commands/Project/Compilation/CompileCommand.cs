@@ -383,7 +383,7 @@ namespace Slipe.Commands.Project
             string moduleTable = "moduleTable = {";
             foreach (SlipeModule module in config.modules)
             {
-                moduleTable += string.Format("\"{0}\"", module.path);
+                moduleTable += string.Format("\"{0}\", ", module.path);
             }
             moduleTable += "}";
             File.WriteAllText("Dist/Client/Modules.lua", moduleTable);
