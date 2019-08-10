@@ -43,10 +43,16 @@ namespace Slipe.Commands.Project.Compilation
                 RecurseSubdirectories = true
             }))
             {
-                Assembly assembly = LoadAssembly(file);
-                if (assembly != null)
+                try
                 {
-                    assemblies.Add(assembly);
+                    Assembly assembly = LoadAssembly(file);
+                    if (assembly != null)
+                    {
+                        assemblies.Add(assembly);
+                    }
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
                 }
             }
 

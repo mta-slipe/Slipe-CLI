@@ -48,6 +48,7 @@ namespace Slipe.Commands.Global
             // *** Redirect the output ***
             processInfo.RedirectStandardError = true;
             processInfo.RedirectStandardOutput = true;
+            processInfo.Arguments = options.ContainsKey("dev") ? "dev" : "";
 
             process = Process.Start(processInfo);
         }
