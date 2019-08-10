@@ -12,6 +12,16 @@ namespace Slipe
         public SlnFile(string path)
         {
             this.path = path;
+            if (!File.Exists(path))
+            {
+                if (File.Exists("Resource.sln"))
+                {
+                    this.path = "Resource.sln";
+                } else
+                {
+                    throw new SlipeException($"Unable to find {path} file. \nPlease name your solution the same as the directory or 'Resource.sln'");
+                }
+            }
         }
 
         public void AddProject(string name, string path)

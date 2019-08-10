@@ -25,6 +25,7 @@ namespace Slipe.Commands.Project.Project
             {
                 path = targetModule.path + "/" + path;
             }
+            SlnFile solution = new SlnFile($"{Path.GetFileName(Directory.GetCurrentDirectory())}.sln");
 
 
             string csProjPath = path + "/" + name + ".csproj";
@@ -39,7 +40,6 @@ namespace Slipe.Commands.Project.Project
             CsprojFile projectFile = new CsprojFile(csProjPath, name, "netcoreapp3.0");
             projectFile.Save();
 
-            SlnFile solution = new SlnFile("Resource.sln");
             solution.AddProject(name, csProjPath);
 
             SlipeConfigCompileTarget target = targetsModule ? targetModule.compileTargets : config.compileTargets;

@@ -24,6 +24,7 @@ namespace Slipe.Commands.Project.Project
                     return;
                 }
             }
+            SlnFile solution = new SlnFile($"{Path.GetFileName(Directory.GetCurrentDirectory())}.sln");
 
             string name = parameters[0];
             string path = "Source/" + name;
@@ -50,7 +51,6 @@ namespace Slipe.Commands.Project.Project
             target.client.Remove(name);
 
             string csProjPath = path + "/" + name + ".csproj";
-            SlnFile solution = new SlnFile("Resource.sln");
             solution.RemoveProject(name, csProjPath);
 
         }
