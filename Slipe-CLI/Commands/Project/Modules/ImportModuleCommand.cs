@@ -26,8 +26,8 @@ namespace Slipe.Commands.Project.Modules
             bool isUrl = Uri.TryCreate(pathOrUrl, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
             if (isUrl)
             {
-                path = "/DownloadedModule.zip";
-                new WebClient().DownloadFile("http://mta-slipe.com/slipe-core.zip", path);
+                path = "./DownloadedModule.zip";
+                new WebClient().DownloadFile(pathOrUrl, path);
             } else
             {
                 path = pathOrUrl;
@@ -64,11 +64,12 @@ namespace Slipe.Commands.Project.Modules
 
             Directory.Move(tempDir, targetDirectory);
 
+            module.path = Path.GetRelativePath(Directory.GetCurrentDirectory(),targetDirectory);
             config.modules.Add(module);
 
             if (isUrl)
             {
-                Directory.Delete(path, true);
+                File.Delete(path);
             }
         }
     }

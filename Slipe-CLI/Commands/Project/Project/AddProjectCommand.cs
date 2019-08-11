@@ -23,7 +23,7 @@ namespace Slipe.Commands.Project.Project
                 throw new SlipeException("Please specify server or client (or both): \nslipe add-project {project-name} [-server] [-client]");
             }
 
-            SlipeConfigCompileTarget target = targetsModule ? targetModule.compileTargets : config.compileTargets;
+            SlipeConfigCompileTargetList target = targetsModule ? targetModule.compileTargets : config.compileTargets;
 
             if (options.ContainsKey("server"))
             {

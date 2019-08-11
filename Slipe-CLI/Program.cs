@@ -26,17 +26,18 @@ namespace Slipe
             {
                 //args = new string[]
                 //{
-                //    "hook",
+                //    "meta-generate"
+                //    //"hook",
 
-                //    "-domain", "127.0.0.1",
-                //    "-port", "50456",
+                //    //"-domain", "127.0.0.1",
+                //    //"-port", "50456",
 
-                //    "-sourceDirectory", @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\SlipeRace",
-                //    "-outputDirectory", @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\[built]\SlipeRaceBuilt",
+                //    //"-sourceDirectory", @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\SlipeRace",
+                //    //"-outputDirectory", @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\[built]\SlipeRaceBuilt",
 
-                //    "-luac",
-                //    "-repo", "testRepo",
-                //    "-branch", "refs/heads/master",
+                //    //"-luac",
+                //    //"-repo", "testRepo",
+                //    //"-branch", "refs/heads/master",
                 //};
                 cli = new CLI(args);
                 cli.Run();

@@ -10,14 +10,10 @@ namespace Slipe.Commands.Project.Compilation
     class CheckValidityCommand : ProjectCommand
     {
         public override string Template => "check-validity";
-        private Type IRpcType;
 
         public override void Run()
         {
             config.exports = new List<SlipeExport>();
-
-            IndexDirectory("./Slipe/Build/Server", "server");
-            IndexDirectory("./Slipe/Build/Client", "client");
 
             foreach (SlipeModule module in config.modules)
             {
@@ -27,6 +23,9 @@ namespace Slipe.Commands.Project.Compilation
                     IndexDirectory(module.path + "/Build/Client", "client");
                 }
             }
+
+            IndexDirectory("./Slipe/Build/Server", "server");
+            IndexDirectory("./Slipe/Build/Client", "client");
         }
 
         public void IndexDirectory(string path, string type)
@@ -56,11 +55,6 @@ namespace Slipe.Commands.Project.Compilation
                 }
             }
 
-            if (IRpcType == null)
-            {
-                throw new SlipeException("IRpc not found");
-            }
-
             foreach (Assembly assembly in assemblies)
             {
                 AssessAssemblyValidity(assembly);
@@ -74,16 +68,6 @@ namespace Slipe.Commands.Project.Compilation
             {
                 Assembly assembly = Assembly.LoadFrom(fullPath);
 
-
-                foreach (Type type in assembly.GetTypes())
-                {
-                    if (type.FullName == "Slipe.Shared.Rpc.IRpc")
-                    {
-                        IRpcType = type;
-                        break;
-                    }
-
-                }
                 return assembly;
             }
             catch (Exception e)

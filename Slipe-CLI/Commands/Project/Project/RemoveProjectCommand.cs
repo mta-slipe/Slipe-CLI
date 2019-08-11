@@ -23,7 +23,7 @@ namespace Slipe.Commands.Project.Project
             }
 
 
-            SlipeConfigCompileTarget target = targetsModule ? targetModule.compileTargets : config.compileTargets;
+            SlipeConfigCompileTargetList target = targetsModule ? targetModule.compileTargets : config.compileTargets;
 
             if (options.ContainsKey("server"))
             {

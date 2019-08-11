@@ -42,7 +42,7 @@ namespace Slipe.Commands.Project.Project
 
             solution.AddProject(name, csProjPath);
 
-            SlipeConfigCompileTarget target = targetsModule ? targetModule.compileTargets : config.compileTargets;
+            SlipeConfigCompileTargetList target = targetsModule ? targetModule.compileTargets : config.compileTargets;
             if (options.ContainsKey("server"))
             {
                 target.server.Add(name);

@@ -66,7 +66,7 @@ namespace Slipe.Commands.Project
             }
         }
 
-        private void CopySourceFiles(string from, string to)
+        private void CopySourceFiles(string from, string to, bool removeMain = false)
         {
             if (!Directory.Exists(to))
             {
@@ -85,6 +85,10 @@ namespace Slipe.Commands.Project
                     }
 
                     File.Copy(file, fullTarget, true);
+                    if (removeMain)
+                    {
+                        File.WriteAllText(fullTarget, File.ReadAllText(fullTarget).Replace("static void Main(", "static void NoMain("));
+                    }
                 }
             }
         }
@@ -171,6 +175,7 @@ namespace Slipe.Commands.Project
             {
                 if (!file.Contains("\\obj\\") && !file.Contains("/obj/") && file.EndsWith(".dll"))
                 {
+                    Console.WriteLine(file);
                     string fullTarget = to + "/" + Path.GetFileName(file);
 
                     if (!Directory.Exists(Path.GetDirectoryName(fullTarget)))
@@ -254,9 +259,9 @@ namespace Slipe.Commands.Project
 
             if (!options.ContainsKey("server-only"))
             {
-                foreach (string project in config.compileTargets.client)
+                foreach (var project in config.compileTargets.client)
                 {
-                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Client");
+                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Client", project.BlockEntryPoint == true ? true : false);
                 }
                 PrepareDistDirectory("./Dist/Client");
                 CompileSourceFiles("./Slipe/Build/Client", "Dist/Client", dlls, attributes);
@@ -264,9 +269,9 @@ namespace Slipe.Commands.Project
 
             if (!options.ContainsKey("client-only"))
             {
-                foreach (string project in config.compileTargets.server)
+                foreach (var project in config.compileTargets.server)
                 {
-                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Server");
+                    CopySourceFiles("./Source/" + project, "./Slipe/Build/Server", project.BlockEntryPoint == true ? true : false);
                 }
                 PrepareDistDirectory("./Dist/Server");
                 CompileSourceFiles("./Slipe/Build/Server", "Dist/Server", dlls, attributes);
@@ -298,10 +303,10 @@ namespace Slipe.Commands.Project
             if (!options.ContainsKey("server-only"))
             {
                 PrepareDistDirectory(clientDistPath);
-                foreach (string project in moduleConfig.compileTargets.client)
+                foreach (var project in moduleConfig.compileTargets.client)
                 {
                     CopyDlls(basePath + "/" + project, dllPath);
-                    CopySourceFiles(basePath + "/" + project, clientBuildPath + "/" + project);
+                    CopySourceFiles(basePath + "/" + project, clientBuildPath + "/" + project, project.BlockEntryPoint == true ? true : false);
                 }
                 CompileSourceFiles(clientBuildPath, clientDistPath, dlls, attributes, true);
             }
@@ -310,10 +315,10 @@ namespace Slipe.Commands.Project
             if (!options.ContainsKey("client-only"))
             {
                 PrepareDistDirectory(serverDistPath);
-                foreach (string project in moduleConfig.compileTargets.server)
+                foreach (var project in moduleConfig.compileTargets.server)
                 {
                     CopyDlls(basePath + "/" + project, dllPath);
-                    CopySourceFiles(basePath + "/" + project, serverBuildPath + "/" + project);
+                    CopySourceFiles(basePath + "/" + project, serverBuildPath + "/" + project, project.BlockEntryPoint == true ? true : false);
                 }
                 CompileSourceFiles(serverBuildPath, serverDistPath, dlls, attributes, true);
 
@@ -326,25 +331,29 @@ namespace Slipe.Commands.Project
 
             foreach(var project in config.compileTargets.server)
             {
-                string[] splits = project.Split("/");
+                string[] splits = ((string)project).Split("/");
                 projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], "Source/" + project);
             }
             foreach(var project in config.compileTargets.client)
             {
-                string[] splits = project.Split("/");
+                string[] splits = ((string)project).Split("/");
                 projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], "Source/" + project);
             }
 
             foreach(var module in config.modules)
             {
+                if (module.compileTargets == null)
+                {
+                    module.compileTargets = new SlipeConfigCompileTargetList();
+                }
                 foreach (var project in module.compileTargets.server)
                 {
-                    string[] splits = project.Split("/");
+                    string[] splits = ((string)project).Split("/");
                     projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], module.path + "/" + project);
                 }
                 foreach (var project in module.compileTargets.client)
                 {
-                    string[] splits = project.Split("/");
+                    string[] splits = ((string)project).Split("/");
                     projectPaths += string.Format("\t['{0}'] = '{1}',\n", splits[splits.Length - 1], module.path + "/" + project);
                 }
             }

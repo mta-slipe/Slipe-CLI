@@ -40,7 +40,7 @@ namespace Slipe
 
     class SlipeConfig
     {
-        public SlipeConfigCompileTarget compileTargets;
+        public SlipeConfigCompileTargetList compileTargets;
 
         public List<string> dlls = new List<string>();
         public List<string> systemComponents = new List<string>();
@@ -51,10 +51,30 @@ namespace Slipe
         public string serverMinVersion;
     }
 
+    class SlipeConfigCompileTargetList
+    {
+        public List<SlipeConfigCompileTarget> client = new List<SlipeConfigCompileTarget>();
+        public List<SlipeConfigCompileTarget> server = new List<SlipeConfigCompileTarget>();
+    }
+
     class SlipeConfigCompileTarget
     {
-        public List<string> client = new List<string>();
-        public List<string> server = new List<string>();
+        public string path;
+        public bool? BlockEntryPoint;
+
+        public static implicit operator SlipeConfigCompileTarget(string path)
+        {
+            return new SlipeConfigCompileTarget()
+            {
+                path = path,
+            };
+        }
+
+        public static implicit operator string(SlipeConfigCompileTarget path)
+        {
+            return path.path;
+        }
+
     }
 
     class SlipeModule
@@ -63,7 +83,7 @@ namespace Slipe
         public string name;
         public string path;
 
-        public SlipeConfigCompileTarget compileTargets;
+        public SlipeConfigCompileTargetList compileTargets = new SlipeConfigCompileTargetList();
 
         public List<string> dlls = new List<string>();
         public List<string> attributes = new List<string>();

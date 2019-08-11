@@ -35,10 +35,10 @@ namespace Slipe.Commands.Project.Modules
             SlipeModule module = new SlipeModule()
             {
                 type = "internal",
-                compileTargets = new SlipeConfigCompileTarget()
+                compileTargets = new SlipeConfigCompileTargetList()
                 {
-                    client = new List<string>(),
-                    server = new List<string>()
+                    client = new List<SlipeConfigCompileTarget>(),
+                    server = new List<SlipeConfigCompileTarget>()
                 },
                 name = name,
                 path = directory,

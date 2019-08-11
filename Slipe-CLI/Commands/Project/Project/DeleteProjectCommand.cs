@@ -46,7 +46,7 @@ namespace Slipe.Commands.Project.Project
             }
             Directory.Delete(path);
             
-            SlipeConfigCompileTarget target = options.ContainsKey("module") ? targetModule.compileTargets : config.compileTargets;
+            SlipeConfigCompileTargetList target = options.ContainsKey("module") ? targetModule.compileTargets : config.compileTargets;
             target.server.Remove(name);
             target.client.Remove(name);
 
