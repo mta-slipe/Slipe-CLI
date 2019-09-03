@@ -17,6 +17,7 @@ namespace Slipe.Commands.Project.Project
             }
 
             string projectName = parameters[0];
+            string path = "Source/" + projectName;
 
             if (! options.ContainsKey("server") && ! options.ContainsKey("client"))
             {
@@ -31,7 +32,7 @@ namespace Slipe.Commands.Project.Project
                 {
                     throw new SlipeException("No project by this name is found in ./Source/Server, if you wish to add it anyway use -force");
                 }
-                target.server.Add(projectName);
+                target.server.Add(path);
             }
             if (options.ContainsKey("client"))
             {
@@ -39,7 +40,7 @@ namespace Slipe.Commands.Project.Project
                 {
                     throw new SlipeException("No project by this name is found in ./Source/Server, if you wish to add it anyway use -force");
                 }
-                target.client.Add(projectName);
+                target.client.Add(path);
             }
         }
     }

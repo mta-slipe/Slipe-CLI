@@ -16,6 +16,7 @@ namespace Slipe.Commands.Project.Project
             }
 
             string projectName = parameters[0];
+            string path = "Source/" + projectName;
 
             if (! options.ContainsKey("server") && ! options.ContainsKey("client"))
             {
@@ -27,19 +28,19 @@ namespace Slipe.Commands.Project.Project
 
             if (options.ContainsKey("server"))
             {
-                if (!target.server.Contains(projectName))
+                if (!target.server.Contains(path))
                 {
                     throw new SlipeException(projectName + " not found in server");
                 }
-                target.server.Remove(projectName);
+                target.server.Remove(path);
             }
             if (options.ContainsKey("client"))
             {
-                if (!target.server.Contains(projectName))
+                if (!target.server.Contains(path))
                 {
                     throw new SlipeException(projectName + " not found in client");
                 }
-                target.client.Remove(projectName);
+                target.client.Remove(path);
             }
         }
     }

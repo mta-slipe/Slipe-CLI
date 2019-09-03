@@ -45,11 +45,11 @@ namespace Slipe.Commands.Project.Project
             SlipeConfigCompileTargetList target = targetsModule ? targetModule.compileTargets : config.compileTargets;
             if (options.ContainsKey("server"))
             {
-                target.server.Add(name);
+                target.server.Add("Source/" + name);
             }
             if (options.ContainsKey("client"))
             {
-                target.client.Add(name);
+                target.client.Add("Source/" + name);
             }
         }
     }
