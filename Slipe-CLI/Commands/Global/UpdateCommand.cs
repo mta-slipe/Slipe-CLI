@@ -70,8 +70,7 @@ namespace Slipe.Commands.Global
             Process process;
 
             processInfo = new ProcessStartInfo("sudo");
-            processInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "/" + name;
-            processInfo.Arguments = $"./install.sh dev";
+            processInfo.Arguments = $"./{name}/install.sh {(options.ContainsKey("dev") ? "dev" : "")}";
 
             processInfo.CreateNoWindow = true;
             processInfo.UseShellExecute = false;
