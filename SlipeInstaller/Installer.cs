@@ -8,7 +8,7 @@ using System.Security.Principal;
 
 namespace SlipeInstaller
 {
-    class Program
+    public static class Installer
     {
         static string url = "https://mta-slipe.com/downloads/cli.zip";
 
@@ -19,16 +19,27 @@ namespace SlipeInstaller
                 Console.WriteLine("Updating from dev environment");
                 url = "https://development.mta-slipe.com/downloads/cli.zip";
             }
-            LaunchAsAdmin(string.Join(" ", args));
 
-            Install();
+            try
+            {
+                Install(url);
+            } catch (Exception e)
+            {
+                LaunchAsAdmin(string.Join(" ", args));
+                Install(url);
+            }
+
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
         }
 
-        static void Install()
+        public static void Install(string url)
         {
             string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             string installationPath = Path.Combine(programFiles, "Slipe");
             string zipPath = "cli.zip";
+
+            AddToPath(installationPath);
 
             if (Directory.Exists(installationPath))
             {
@@ -40,8 +51,6 @@ namespace SlipeInstaller
             try
             {
                 ZipFile.ExtractToDirectory(zipPath, installationPath);
-
-                AddToPath(installationPath);
 
                 Console.WriteLine("Installation successfull");
             }
@@ -56,7 +65,7 @@ namespace SlipeInstaller
             }
         }
 
-        static void AddToPath(string directory)
+        public static void AddToPath(string directory)
         {
             string path = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Machine);
             if (! path.Contains(directory))
@@ -65,36 +74,24 @@ namespace SlipeInstaller
             }
         }
 
-        static void LaunchAsAdmin(string args)
+        public static void LaunchAsAdmin(string args)
         {
-            if (!IsRunAsAdmin())
+            ProcessStartInfo proc = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location)
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location)
-                {
-                    UseShellExecute = true,
-                    Verb = "runas",
-                    Arguments = args
-                };
+                UseShellExecute = true,
+                Verb = "runas",
+                Arguments = args
+            };
 
-                try
-                {
-                    Process.Start(proc);
-                    Environment.Exit(0);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("This program must be run as an administrator! \n\n" + ex.ToString());
-                    Environment.Exit(1);
-                }
+            try
+            {
+                Process.Start(proc);
+                Environment.Exit(0);
             }
-        }
-
-        static bool IsRunAsAdmin()
-        {
-            WindowsIdentity id = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(id);
-
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            catch (Exception ex)
+            {
+                Console.WriteLine("This program must be run as an administrator! \n\n" + ex.ToString());
+            }
         }
     }
 }
