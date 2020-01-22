@@ -27,7 +27,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: '**/*.csproj'
+    projects: '**/*.sln'
 
 - task: PublishBuildArtifacts@1
   inputs:
