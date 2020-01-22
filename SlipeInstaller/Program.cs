@@ -69,21 +69,37 @@ namespace SlipeInstaller
         {
             if (!IsRunAsAdmin())
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location)
+                var path = Assembly.GetExecutingAssembly().Location;
+                Console.WriteLine(path);
+
+                ProcessStartInfo proc = new ProcessStartInfo("dotnet")
                 {
                     UseShellExecute = true,
                     Verb = "runas",
-                    Arguments = args
+                    Arguments = $"{path} {args}"
                 };
 
                 try
                 {
-                    Process.Start(proc);
+                    Process.Start(proc).WaitForExit();
+
+                    Console.WriteLine("Finished installing.");
+                    if (Environment.UserInteractive)
+                    {
+                        Console.Write("\nPress any key to close...");
+                        Console.ReadKey();
+                    }
+
                     Environment.Exit(0);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("This program must be run as an administrator! \n\n" + ex.ToString());
+                    if (Environment.UserInteractive)
+                    {
+                        Console.Write("\nPress any key to close...");
+                        Console.ReadKey();
+                    }
                     Environment.Exit(1);
                 }
             }
