@@ -359,6 +359,7 @@ namespace Slipe.Commands.Project
             }
 
             projectPaths += "}";
+            Directory.CreateDirectory("Dist");
             File.WriteAllText("Dist/projectPaths.lua", projectPaths);
         }
 
