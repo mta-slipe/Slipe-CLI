@@ -374,6 +374,7 @@ namespace Slipe.Commands.Project
                 }
             }
             clientExports += "";
+            Directory.CreateDirectory("Dist/Client");
             File.WriteAllText("Dist/Client/Exports.lua", clientExports);
 
             string serverExports = "";
@@ -385,6 +386,7 @@ namespace Slipe.Commands.Project
                 }
             }
             serverExports += "";
+            Directory.CreateDirectory("Dist/Server");
             File.WriteAllText("Dist/Server/Exports.lua", serverExports);
         }
 
