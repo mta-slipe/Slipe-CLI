@@ -116,7 +116,7 @@ namespace Slipe.Commands.Project
 
         private void CompileSourceFiles(string directory, string to, string[] dlls, string[] attributes, bool isModule = false)
         {
-            string command = @"dotnet ./Slipe/Compiler/CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -c -metadata";
+            string command = @"dotnet ./Slipe/Compiler/CSharp.lua.Launcher.dll -s " + directory + @" -d " + to + " -e -c -metadata";
             if(attributes.Length > 0)
             {
                 command += " -a " + string.Join(";", attributes);
@@ -359,6 +359,7 @@ namespace Slipe.Commands.Project
             }
 
             projectPaths += "}";
+            Directory.CreateDirectory("Dist");
             File.WriteAllText("Dist/projectPaths.lua", projectPaths);
         }
 
@@ -373,6 +374,7 @@ namespace Slipe.Commands.Project
                 }
             }
             clientExports += "";
+            Directory.CreateDirectory("Dist/Client");
             File.WriteAllText("Dist/Client/Exports.lua", clientExports);
 
             string serverExports = "";
@@ -384,6 +386,7 @@ namespace Slipe.Commands.Project
                 }
             }
             serverExports += "";
+            Directory.CreateDirectory("Dist/Server");
             File.WriteAllText("Dist/Server/Exports.lua", serverExports);
         }
 

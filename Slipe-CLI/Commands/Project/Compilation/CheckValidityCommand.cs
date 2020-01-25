@@ -72,7 +72,7 @@ namespace Slipe.Commands.Project.Compilation
             }
             catch (Exception e)
             {
-                if (e.Message != "Assembly with same name is already loaded")
+                if (e.Message != "Assembly with same name is already loaded" && !e.Message.Contains("Format of the executable"))
                 {
                     throw;
                 }

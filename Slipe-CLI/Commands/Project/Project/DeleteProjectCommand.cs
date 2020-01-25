@@ -47,8 +47,8 @@ namespace Slipe.Commands.Project.Project
             Directory.Delete(path);
             
             SlipeConfigCompileTargetList target = options.ContainsKey("module") ? targetModule.compileTargets : config.compileTargets;
-            target.server.Remove(name);
-            target.client.Remove(name);
+            target.server.Remove("Source/" + name);
+            target.client.Remove("Source/" + name);
 
             string csProjPath = path + "/" + name + ".csproj";
             solution.RemoveProject(name, csProjPath);
