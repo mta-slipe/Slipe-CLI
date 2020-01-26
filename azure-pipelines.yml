@@ -43,19 +43,19 @@ steps:
   inputs:
     SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: |
-      Newtonsoft.Json.dll
-      Slipe.dll
-      Slipe.exe
-      Slipe.runtimeconfig.json
+      **/Newtonsoft.Json.dll
+      **/Slipe.dll
+      **/Slipe.exe
+      **/Slipe.runtimeconfig.json
     TargetFolder: 'cliPacking/Slipe'
 
 
 - task: CopyFiles@2
   displayName: 'Copy install.sh'
   inputs:
-    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    SourceFolder: ''
     Contents: |
-      install.sh
+      **/install.sh
     TargetFolder: 'cliPacking'
 
 - task: ArchiveFiles@2
