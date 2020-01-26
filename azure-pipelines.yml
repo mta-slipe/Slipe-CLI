@@ -47,15 +47,15 @@ steps:
       **/bin/**/Slipe.exe
       **/bin/**/Slipe.runtimeconfig.json
     TargetFolder: 'cliPacking/Slipe'
+    flattenFolders: true
 
 
 - task: CopyFiles@2
   displayName: 'Copy install.sh'
   inputs:
-    SourceFolder: ''
-    Contents: |
-      **/bin/**/install.sh
+    Contents: '**/bin/**/install.sh'
     TargetFolder: 'cliPacking'
+    flattenFolders: true
 
 - task: ArchiveFiles@2
   inputs:
