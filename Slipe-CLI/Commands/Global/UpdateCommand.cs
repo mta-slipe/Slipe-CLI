@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlipeUrls;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -32,8 +33,8 @@ namespace Slipe.Commands.Global
             string name = string.Format("./slipe-update-{0}.exe", DateTime.Now.ToShortDateString().Replace("/", "-").Replace("\\", "-"));
 
             string url = options.ContainsKey("dev") ? 
-                "https://development.mta-slipe.com/downloads/SlipeInstaller.exe" : 
-                "https://mta-slipe.com/downloads/SlipeInstaller.exe";
+                Urls.devWindowsCliInstallerUrl : 
+                Urls.windowsCliInstallerUrl;
 
             new WebClient().DownloadFile(url, name);
 
@@ -59,8 +60,8 @@ namespace Slipe.Commands.Global
             string path = name + ".zip";
 
             string url = options.ContainsKey("dev") ? 
-                "https://development.mta-slipe.com/downloads/cli-linux.zip" : 
-                "https://mta-slipe.com/downloads/cli-linux.zip";
+                Urls.devLinuxCliUrl :
+                Urls.linuxCliUrl;
 
             new WebClient().DownloadFile(url, path);
 

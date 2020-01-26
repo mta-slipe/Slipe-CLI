@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlipeUrls;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -54,7 +55,9 @@ namespace SlipeWpfInstaller
                 string path = $"SlipeInstaller.exe";
                 if (!File.Exists(path))
                 {
-                    string url = $"https://{(isDev ? "development." : "")}mta-slipe.com/downloads/SlipeInstaller.exe";
+                    string url = isDev ?
+                        Urls.devWindowsCliInstallerUrl :
+                        Urls.windowsCliInstallerUrl;
                     OutputToErrorBlock($"Downloading from {url} ...\n");
                     (new WebClient()).DownloadFile(url, path);
                     OutputToErrorBlock($"Finished downloading from {url}\n");

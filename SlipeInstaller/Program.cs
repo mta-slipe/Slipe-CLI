@@ -1,3 +1,4 @@
+using SlipeUrls;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -10,14 +11,14 @@ namespace SlipeInstaller
 {
     class Program
     {
-        static string url = "https://mta-slipe.com/downloads/cli.zip";
+        static string url = Urls.windowsCliUrl;
 
         static void Main(string[] args)
         {
             if (args.Length >= 1 && args[0] == "dev")
             {
                 Console.WriteLine("Updating from dev environment");
-                url = "https://development.mta-slipe.com/downloads/cli.zip";
+                url = Urls.devWindowsCliUrl;
             }
             LaunchAsAdmin(string.Join(" ", args));
 

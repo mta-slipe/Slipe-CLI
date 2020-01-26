@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlipeUrls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -24,7 +25,7 @@ namespace Slipe.Commands.Global
                 Command command = (Command)Activator.CreateInstance(type);
                 Console.WriteLine($"slipe {command.Template}");
             }
-            Console.WriteLine("\nVisit https://mta-slipe.com/docs/cli.html for documentation for all commands");
+            Console.WriteLine($"\nVisit {Urls.cliDocs} for documentation for all commands");
 
         }
     }

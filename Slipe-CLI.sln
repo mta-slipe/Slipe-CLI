@@ -11,7 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{45D73904-1C1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installers", "Installers", "{B800895F-01A2-455C-955A-4F63779E81E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlipeInstaller", "SlipeInstaller\SlipeInstaller.csproj", "{3229DC8F-AAD6-4A05-B1F2-BC6569F5FEA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlipeInstaller", "SlipeInstaller\SlipeInstaller.csproj", "{3229DC8F-AAD6-4A05-B1F2-BC6569F5FEA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Urls", "Urls\Urls.csproj", "{7ED2168E-9EB3-4467-99FF-039F6A01C8E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{3229DC8F-AAD6-4A05-B1F2-BC6569F5FEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3229DC8F-AAD6-4A05-B1F2-BC6569F5FEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3229DC8F-AAD6-4A05-B1F2-BC6569F5FEA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ED2168E-9EB3-4467-99FF-039F6A01C8E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ED2168E-9EB3-4467-99FF-039F6A01C8E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ED2168E-9EB3-4467-99FF-039F6A01C8E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ED2168E-9EB3-4467-99FF-039F6A01C8E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

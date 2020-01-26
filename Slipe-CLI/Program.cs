@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Slipe.Commands;
 using Slipe.Commands.Project;
+using SlipeUrls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -154,7 +155,7 @@ You will be able to stop sending usage data at any time using `slipe opt-out`");
                             Timeout = TimeSpan.FromMilliseconds(1000)
                         };
                         client.DefaultRequestHeaders.Add("User-Agent", "Slipe CLI");
-                        var response = await client.PostAsync("https://analytics.mta-slipe.com", content);
+                        var response = await client.PostAsync(Urls.analyticsUrl, content);
                     }
                 }
             } catch (Exception)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlipeUrls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -23,8 +24,8 @@ namespace Slipe.Commands.Project
 
 
             string coreUrl = options.ContainsKey("dev") ? 
-                "https://development.mta-slipe.com/downloads/core.zip" : 
-                "https://mta-slipe.com/downloads/core.zip";
+                Urls.devResourceTemplateUrl : 
+                Urls.resourceTemplateUrl;
 
             new WebClient().DownloadFile(coreUrl, path);
 
