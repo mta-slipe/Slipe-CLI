@@ -42,10 +42,10 @@ steps:
   displayName: 'Copy CLI files'
   inputs:
     Contents: |
-      **/bin/Newtonsoft.Json.dll
-      **/bin/Slipe.dll
-      **/bin/Slipe.exe
-      **/bin/Slipe.runtimeconfig.json
+      **/bin/**/Newtonsoft.Json.dll
+      **/bin/**/Slipe.dll
+      **/bin/**/Slipe.exe
+      **/bin/**/Slipe.runtimeconfig.json
     TargetFolder: 'cliPacking/Slipe'
 
 
@@ -54,7 +54,7 @@ steps:
   inputs:
     SourceFolder: ''
     Contents: |
-      **/bin/install.sh
+      **/bin/**/install.sh
     TargetFolder: 'cliPacking'
 
 - task: ArchiveFiles@2
