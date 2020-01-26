@@ -41,12 +41,11 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy CLI files'
   inputs:
-    SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: |
-      **/Newtonsoft.Json.dll
-      **/Slipe.dll
-      **/Slipe.exe
-      **/Slipe.runtimeconfig.json
+      **/bin/Newtonsoft.Json.dll
+      **/bin/Slipe.dll
+      **/bin/Slipe.exe
+      **/bin/Slipe.runtimeconfig.json
     TargetFolder: 'cliPacking/Slipe'
 
 
@@ -55,7 +54,7 @@ steps:
   inputs:
     SourceFolder: ''
     Contents: |
-      **/install.sh
+      **/bin/install.sh
     TargetFolder: 'cliPacking'
 
 - task: ArchiveFiles@2
