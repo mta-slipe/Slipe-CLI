@@ -1,6 +1,9 @@
 trigger:
 - master
 - development
+pr:
+- master
+- development
 
 pool:
   vmImage: 'windows-latest'
@@ -34,6 +37,41 @@ steps:
     publishWebProjects: false
     projects: '**/*.sln'
     arguments: '--output $(Build.ArtifactStagingDirectory)'
+
+- task: CopyFiles@2
+  displayName: 'Copy CLI files'
+  inputs:
+    Contents: |
+      **/bin/**/Newtonsoft.Json.dll
+      **/bin/**/Slipe.dll
+      **/bin/**/Slipe.exe
+      **/bin/**/Slipe.runtimeconfig.json
+    TargetFolder: 'cliPacking/Slipe'
+    flattenFolders: true
+
+
+- task: CopyFiles@2
+  displayName: 'Copy install.sh'
+  inputs:
+    Contents: '**/bin/**/install.sh'
+    TargetFolder: 'cliPacking'
+    flattenFolders: true
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'cliPacking/Slipe'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/cli.zip'
+    replaceExistingArchive: true
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'cliPacking'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/cli-linux.zip'
+    replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
