@@ -90,12 +90,17 @@ namespace Slipe.Commands.Project
             foreach (string file in files)
             {
                 byte[] content = File.ReadAllBytes(file);
-                string url = "http://luac.mtasa.com?compile=1&debug=0&obfuscate=2";
-                HttpClient client = new HttpClient();
-                var result = await client.PostAsync(url, new ByteArrayContent(content));
-                var compiledLua = await result.Content.ReadAsByteArrayAsync();
-                File.Delete(file);
-                File.WriteAllBytes(file, compiledLua);
+
+                if (content.Length > 0)
+                {
+                    string url = "http://luac.mtasa.com?compile=1&debug=0&obfuscate=2";
+                    HttpClient client = new HttpClient();
+                    var result = await client.PostAsync(url, new ByteArrayContent(content));
+                    var compiledLua = await result.Content.ReadAsByteArrayAsync();
+                    File.Delete(file);
+                    File.WriteAllBytes(file, compiledLua);
+                }
+
             }
         }
 
