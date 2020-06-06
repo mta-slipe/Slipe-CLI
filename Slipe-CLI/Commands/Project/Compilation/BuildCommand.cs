@@ -91,12 +91,7 @@ namespace Slipe.Commands.Project
             {
                 byte[] content = File.ReadAllBytes(file);
 
-                if (content.Length == 0)
-                {
-                    File.Delete(file);
-                    File.WriteAllBytes(file, content);
-                }
-                else
+                if (content.Length > 0)
                 {
                     string url = "http://luac.mtasa.com?compile=1&debug=0&obfuscate=2";
                     HttpClient client = new HttpClient();
