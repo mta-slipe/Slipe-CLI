@@ -62,34 +62,27 @@ namespace Slipe.Commands.Global
                 "https://development.mta-slipe.com/downloads/cli-linux.zip" : 
                 "https://mta-slipe.com/downloads/cli-linux.zip";
 
-            new WebClient().DownloadFile(url, path);
-
-            ZipFile.ExtractToDirectory(path, name);
-
-            ProcessStartInfo processInfo;
-            Process process;
-
-            processInfo = new ProcessStartInfo($"{name}/install.sh");
-            processInfo.Arguments = options.ContainsKey("dev") ? "dev" : "";
-
-            processInfo.CreateNoWindow = true;
-            processInfo.UseShellExecute = false;
-            // *** Redirect the output ***
-            processInfo.RedirectStandardError = true;
-            processInfo.RedirectStandardOutput = true;
-
-            process = Process.Start(processInfo);
-            process.WaitForExit();
-
-            int exitCode = process.ExitCode;
-
-            // clean up
-            Directory.Delete(name, true);
-            File.Delete(path);
-
-            if (exitCode != 0)
+            try
             {
-                throw new SlipeException("Unable to update slipe, error: " + process.StandardError.ReadToEnd());
+                new WebClient().DownloadFile(url, path);
+
+                ZipFile.ExtractToDirectory(path, name);
+
+                foreach (var file in Directory.GetFiles($"{name}/Slipe"))
+                {
+                    File.Copy(file, $"/var/Slipe{file.Replace($"{name}/Slipe", "")}", true);
+                }
+
+                Directory.Delete(name, true);
+                File.Delete(path);
+            } catch (Exception e)
+            {
+                Console.WriteLine("Failed to update slipe, error: " + e.Message);
+
+                Directory.Delete(name, true);
+                File.Delete(path);
+
+                throw;
             }
         }
     }
