@@ -13,7 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly: AssemblyVersion("0.10.0")]
+[assembly: AssemblyVersion("0.10.1")]
 
 namespace Slipe
 {

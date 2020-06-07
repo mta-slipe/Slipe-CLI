@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -87,7 +88,8 @@ namespace Slipe.Commands.Project
         private async Task CompileDirectoryToLuac(string directory)
         {
             string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
-            foreach (string file in files)
+
+            var tasks = files.Select(async file =>
             {
                 byte[] content = File.ReadAllBytes(file);
 
@@ -100,8 +102,8 @@ namespace Slipe.Commands.Project
                     File.Delete(file);
                     File.WriteAllBytes(file, compiledLua);
                 }
-
-            }
+            });
+            await Task.WhenAll(tasks);
         }
 
         private void Compile()
