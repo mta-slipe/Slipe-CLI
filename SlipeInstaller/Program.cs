@@ -85,22 +85,22 @@ namespace SlipeInstaller
                     Process.Start(proc).WaitForExit();
 
                     Console.WriteLine("Finished installing.");
-                    if (Environment.UserInteractive)
-                    {
-                        Console.Write("\nPress any key to close...");
-                        Console.ReadKey();
-                    }
+                    //if (Environment.UserInteractive)
+                    //{
+                    //    Console.Write("\nPress any key to close...");
+                    //    Console.ReadKey();
+                    //}
 
                     Environment.Exit(0);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("This program must be run as an administrator! \n\n" + ex.ToString());
-                    if (Environment.UserInteractive)
-                    {
-                        Console.Write("\nPress any key to close...");
-                        Console.ReadKey();
-                    }
+                    //if (Environment.UserInteractive)
+                    //{
+                    //    Console.Write("\nPress any key to close...");
+                    //    Console.ReadKey();
+                    //}
                     Environment.Exit(1);
                 }
             }

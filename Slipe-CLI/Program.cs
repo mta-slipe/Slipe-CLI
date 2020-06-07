@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: AssemblyVersion("0.10.0")]
+
 namespace Slipe
 {
     class CLI
@@ -27,7 +29,9 @@ namespace Slipe
             {
                 //args = new string[]
                 //{
-                //    "meta-generate"
+                //    "update",
+                //    "-dev"
+                //    //"meta-generate"
                 //    //"hook",
 
                 //    //"-domain", "127.0.0.1",
