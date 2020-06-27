@@ -57,6 +57,10 @@ namespace Slipe.Commands.Project
 
         private void CopyFiles(string from, string to)
         {
+            if (!Directory.Exists(from))
+            {
+                return;
+            }
             if (!Directory.Exists(to))
             {
                 Directory.CreateDirectory(to);
