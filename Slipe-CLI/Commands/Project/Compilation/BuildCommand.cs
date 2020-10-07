@@ -91,8 +91,12 @@ namespace Slipe.Commands.Project
 
         private async Task CompileDirectoryToLuac(string directory)
         {
-            string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
+            using HttpClient httpClient = new HttpClient(new HttpClientHandler()
+            {
+                MaxConnectionsPerServer = 16
+            });
 
+            string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
             var tasks = files.Select(async file =>
             {
                 byte[] content = File.ReadAllBytes(file);
@@ -100,8 +104,7 @@ namespace Slipe.Commands.Project
                 if (content.Length > 0)
                 {
                     string url = "http://luac.mtasa.com?compile=1&debug=0&obfuscate=2";
-                    HttpClient client = new HttpClient();
-                    var result = await client.PostAsync(url, new ByteArrayContent(content));
+                    var result = await httpClient.PostAsync(url, new ByteArrayContent(content));
                     var compiledLua = await result.Content.ReadAsByteArrayAsync();
                     File.Delete(file);
                     File.WriteAllBytes(file, compiledLua);
