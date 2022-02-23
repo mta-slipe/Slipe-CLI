@@ -16,10 +16,11 @@ namespace Slipe.Commands.Project.Exports
         {
             config.exports = new List<SlipeExport>();
 
+            IndexDirectory("./Slipe/Core/DLL", "none");
             IndexDirectory("./Slipe/Build/Server", "server");
             IndexDirectory("./Slipe/Build/Client", "client");
 
-            foreach(SlipeModule module in config.modules)
+            foreach (SlipeModule module in config.modules)
             {
                 IndexDirectory(module.path + "/Build/Server", "server");
                 IndexDirectory(module.path + "/Build/Client", "client");
