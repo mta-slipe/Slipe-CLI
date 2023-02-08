@@ -103,7 +103,7 @@ namespace Slipe.Commands.Project
 
                 if (content.Length > 0)
                 {
-                    string url = "http://luac.mtasa.com?compile=1&debug=0&obfuscate=2";
+                    string url = "http://luac.mtasa.com?compile=1&debug=0&obfuscate=3";
                     var result = await httpClient.PostAsync(url, new ByteArrayContent(content));
                     var compiledLua = await result.Content.ReadAsByteArrayAsync();
                     File.Delete(file);
