@@ -224,7 +224,7 @@ namespace Slipe.Commands.Project
                 {
                     relativePath = relativePath.Substring(1);
                 }
-                XmlElement element = meta.CreateElement("file");
+                XmlElement element = meta.CreateElement("html");
                 element.SetAttribute("src", relativePath);
                 element.SetAttribute("raw", "true");
                 if (relativePath == defaultFile)
