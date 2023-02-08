@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -33,6 +34,7 @@ namespace Slipe.Commands.Project
 
             CreateMainElements();
             CreateFileElements(config);
+            CreateHttpElements(config);
             CreateMinVersion();
 
             CreateExportElements(config);
@@ -146,6 +148,21 @@ namespace Slipe.Commands.Project
             }
         }
 
+        private void CreateHttpElements(SlipeConfig config)
+        {
+            foreach (SlipeHttpDirectory directory in config.httpDirectories)
+            {
+                IndexDirectoryForHttpFiles(directory.path, directory.interpretedFiles, config.defaultHttpFile);
+            }
+            foreach (SlipeModule module in config.modules)
+            {
+                foreach (SlipeHttpDirectory directory in module.httpDirectories)
+                {
+                    IndexDirectoryForHttpFiles(module.path + "/" + directory.path, directory.interpretedFiles, config.defaultHttpFile);
+                }
+            }
+        }
+
         private void CreateExportElements(SlipeConfig config)
         {
             foreach(SlipeExport export in config.exports)
@@ -186,6 +203,43 @@ namespace Slipe.Commands.Project
                     element.SetAttribute("download", downloads.ToString().ToLower());
                     root.AppendChild(element);
                 }
+            }
+        }
+
+        private void IndexDirectoryForHttpFiles(string directory, List<string> interpretedFiles, string defaultFile)
+        {
+            Console.WriteLine("Indexing {0}", directory);
+            if (!Directory.Exists(directory))
+            {
+                return;
+            }
+            foreach (string file in Directory.GetFiles(directory, "*", SearchOption.AllDirectories))
+            {
+                string relativePath = file.Replace("\\", "/");
+                if (relativePath.StartsWith("."))
+                {
+                    relativePath = relativePath.Substring(1);
+                }
+                if (relativePath.StartsWith("/"))
+                {
+                    relativePath = relativePath.Substring(1);
+                }
+                XmlElement element = meta.CreateElement("file");
+                element.SetAttribute("src", relativePath);
+                element.SetAttribute("raw", "true");
+                if (relativePath == defaultFile)
+                {
+                    element.SetAttribute("default", "true");
+                }
+
+                if(interpretedFiles.Any((path) =>
+                {
+                    return relativePath.EndsWith(path);
+                }))
+                {
+                    element.SetAttribute("raw", "false");
+                }
+                root.AppendChild(element);
             }
         }
     }

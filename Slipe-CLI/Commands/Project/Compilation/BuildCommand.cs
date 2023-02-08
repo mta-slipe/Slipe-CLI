@@ -43,11 +43,21 @@ namespace Slipe.Commands.Project
                 CopyFiles("./" + directory.path, outputDirectory + "/" + directory.path);
             }
 
+            foreach (SlipeHttpDirectory directory in config.httpDirectories)
+            {
+                CopyFiles("./" + directory.path, outputDirectory + "/" + directory.path);
+            }
+
             foreach (SlipeModule module in config.modules)
             {
                 CopyFiles(module.path + "/Lua", outputDirectory + "/" + module.path + "/Lua");
 
                 foreach(SlipeAssetDirectory directory in module.assetDirectories)
+                {
+                    CopyFiles(module.path + "/" + directory.path, outputDirectory + "/" + module.path + "/" + directory.path);
+                }
+
+                foreach (SlipeHttpDirectory directory in module.httpDirectories)
                 {
                     CopyFiles(module.path + "/" + directory.path, outputDirectory + "/" + module.path + "/" + directory.path);
                 }
