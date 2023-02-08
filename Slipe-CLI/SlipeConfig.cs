@@ -45,10 +45,14 @@ namespace Slipe
         public List<string> dlls = new List<string>();
         public List<string> systemComponents = new List<string>();
         public List<SlipeAssetDirectory> assetDirectories = new List<SlipeAssetDirectory>();
+        public List<SlipeHttpDirectory> httpDirectories = new List<SlipeHttpDirectory>();
         public List<SlipeModule> modules = new List<SlipeModule>();
         public List<SlipeExport> exports = new List<SlipeExport>();
         public string clientMinVersion;
         public string serverMinVersion;
+
+        public string defaultHttpFile = "";
+
     }
 
     class SlipeConfigCompileTargetList
@@ -90,6 +94,8 @@ namespace Slipe
         public List<string> systemComponents = new List<string>();
         public List<string> backingLua = new List<string>();
         public List<SlipeAssetDirectory> assetDirectories = new List<SlipeAssetDirectory>();
+
+        public List<SlipeHttpDirectory> httpDirectories = new List<SlipeHttpDirectory>();
     }
 
     class SlipeAssetDirectory
@@ -105,5 +111,11 @@ namespace Slipe
         public string niceName;
         public string type;
         public bool isHttp;
+    }
+
+    class SlipeHttpDirectory
+    {
+        public string path;
+        public List<string> interpretedFiles = new List<string>();
     }
 }
