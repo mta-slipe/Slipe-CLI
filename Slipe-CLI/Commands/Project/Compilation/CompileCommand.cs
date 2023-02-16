@@ -370,7 +370,7 @@ namespace Slipe.Commands.Project
             {
                 if (export.type == "client")
                 {
-                    clientExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.niceName, export.name);
+                    clientExports += string.Format("function {0}(...)\n\treturn {1}(...)\nend\n", export.niceName, export.name);
                 }
             }
             clientExports += "";
@@ -382,7 +382,7 @@ namespace Slipe.Commands.Project
             {
                 if (export.type == "server")
                 {
-                    serverExports += string.Format("function {0}(...)\n\t{1}(...)\nend\n", export.niceName, export.name);
+                    serverExports += string.Format("function {0}(...)\n\treturn {1}(...)\nend\n", export.niceName, export.name);
                 }
             }
             serverExports += "";
